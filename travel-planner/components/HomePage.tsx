@@ -1,4 +1,4 @@
-import { AspectRatio, Button, Group, Paper, Skeleton, Stack } from '@mantine/core';
+import { AspectRatio, Group, Paper, Skeleton, Stack } from '@mantine/core';
 import { Suspense } from 'react';
 
 const HomePage = () => {
