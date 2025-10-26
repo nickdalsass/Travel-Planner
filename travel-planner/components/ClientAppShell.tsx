@@ -11,10 +11,10 @@ import {
   AppShellNavbar,
   Button,
 } from "@mantine/core";
-import { Plane } from "lucide-react";
+import Image from "next/image";
 import { useDisclosure } from "@mantine/hooks";
 import { usePathname, useRouter } from "next/navigation";
-import LoginButton from "@/components/LoginButton";
+import ProfileButton from "@/components/ProfileButton";
 
 export default function ClientAppShell({
   children,
@@ -24,7 +24,7 @@ export default function ClientAppShell({
   const [opened, { toggle }] = useDisclosure();
   const pathname = usePathname();
   const router = useRouter();
-  const isHomePage = pathname === "/";
+  const isSignupPage = pathname === "/signup";
   const isLoginPage = pathname === "/login";
 
   return (
@@ -33,9 +33,9 @@ export default function ClientAppShell({
         style={{ opacity: "unset" }}
         header={{ height: 75 }}
         navbar={{
-          width: { lg: 200 },
+          width: 200,
           breakpoint: "sm",
-          collapsed: { desktop: !opened },
+          collapsed: { desktop: !opened, mobile: !opened },
         }}
         padding={"xs"}
         w={"75%"}
@@ -50,19 +50,30 @@ export default function ClientAppShell({
             miw={"345px"}
           >
             <Group>
-              {isHomePage && <Burger opened={opened} onClick={toggle} />}
+              {/*Don't show navbar if you're signing up or in, to focus concern on one thing and limit options*/}
+              {!isLoginPage && !isSignupPage && (
+                <Burger opened={opened} onClick={toggle} />
+              )}
               <Button
                 onClick={() => router.push("/")}
                 h={75}
                 ff="monospace"
                 color="black"
                 variant="transparent"
-                leftSection={<Plane size={40} />}
+                leftSection={
+                  <Image
+                    src="/favicon.ico"
+                    alt="Plane icon"
+                    width={50}
+                    height={50}
+                    style={{ objectFit: "contain" }}
+                  />
+                }
               >
                 <Title>Travel Planner</Title>
               </Button>
             </Group>
-            {!isLoginPage && <LoginButton />}
+            {!isLoginPage && <ProfileButton />}
           </Group>
         </AppShellHeader>
         <AppShellNavbar>Navbar</AppShellNavbar>

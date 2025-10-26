@@ -13,13 +13,18 @@ import {
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
+  const router = useRouter();
   const form = useForm({
-    mode: "uncontrolled",
     initialValues: {
       email: "",
       password: "",
+    },
+    validate: {
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+      password: (value) => (value.length < 1 ? 'Password is required' : null),
     },
   });
 
@@ -42,8 +47,7 @@ const LoginPage = () => {
       }
     }
 
-    const homePageUrl = window.location.origin;
-    window.location.href = homePageUrl;
+    router.push("/");
   };
 
   return (
@@ -73,7 +77,6 @@ const LoginPage = () => {
                     }}
                     autoComplete="off"
                     placeholder="foodlover@gmail.com"
-                    key={form.key("email")}
                     {...form.getInputProps("email")}
                   />
 
@@ -89,7 +92,6 @@ const LoginPage = () => {
                     }}
                     autoComplete="off"
                     placeholder="Password..."
-                    key={form.key("password")}
                     {...form.getInputProps("password")}
                   />
                   <Group justify="center" mt="lg">

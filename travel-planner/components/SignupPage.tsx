@@ -88,7 +88,7 @@ const SignupPage = () => {
 
   return (
     <>
-      <Center mt={'5%'}>
+      <Center mt={"5%"}>
         <Stack align="center">
           <Paper radius="md" shadow="md" withBorder bg={"#EEEEEE"} p="xl">
             <Stack gap="xl">
@@ -128,7 +128,7 @@ const SignupPage = () => {
                       },
                     }}
                     autoComplete="off"
-                    placeholder="foodlover@gmail.com"
+                    placeholder="worldtraveler@gmail.com"
                     key={form.key("email")}
                     {...form.getInputProps("email")}
                   />
@@ -166,9 +166,7 @@ const SignupPage = () => {
                   />
 
                   <Group justify="center" mt="lg">
-                    <Button type="submit">
-                      Sign Up
-                    </Button>
+                    <Button type="submit">Sign Up</Button>
                   </Group>
                 </Stack>
               </form>

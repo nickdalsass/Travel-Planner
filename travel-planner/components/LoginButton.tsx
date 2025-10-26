@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import { Button } from '@mantine/core';
-import { User } from 'lucide-react';
+import { Button } from "@mantine/core";
+import { User } from "lucide-react";
 
 export const LoginButton = () => {
   const handleClick = () => {
     if (typeof window !== undefined) {
-      const loginPageUrl = '/login';
+      const loginPageUrl = "/login";
       window.location.href = loginPageUrl;
     }
   };
 
   return (
     <Button
-      h={'70%'}
-      variant='filled'
-      radius={'xl'}
+      h={"70%"}
+      variant="filled"
+      radius={"xl"}
       rightSection={<User />}
       onClick={handleClick}
-      size='lg'
+      size="lg"
     >
       Log In
     </Button>
