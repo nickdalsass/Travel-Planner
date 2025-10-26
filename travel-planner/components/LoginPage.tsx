@@ -55,7 +55,7 @@ const LoginPage = () => {
       <Center mt={"5%"}>
         <Stack align="center">
           <Paper radius="md" shadow="md" withBorder bg={"#EEEEEE"} p="xl">
-            <Stack gap="xl">
+            <Stack gap="md">
               <Title order={1}>Log In</Title>
 
               <form
