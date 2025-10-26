@@ -1,10 +1,12 @@
-import { Inter } from "next/font/google";
+import { Quicksand } from "next/font/google";
 import "@mantine/core/styles.css";
-import "./globals.css";
 import { MantineProvider } from "@mantine/core";
 import ClientAppShell from "@/components/ClientAppShell";
 
-const inter = Inter({ subsets: ["latin"] });
+const quicksand = Quicksand({ 
+  subsets: ["latin"],
+  weight: ['300', '400', '500', '600', '700']
+});
 
 export default function RootLayout({
   children,
@@ -13,8 +15,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <MantineProvider theme={{ fontFamily: "Inter, sans-serif" }}>
+      <body className={quicksand.className}>
+        <MantineProvider theme={{ fontFamily: `${quicksand.style.fontFamily}, sans-serif` }}>
           <ClientAppShell>{children}</ClientAppShell>
         </MantineProvider>
       </body>
