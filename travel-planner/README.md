@@ -33,6 +33,14 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 @MyTeam Be sure to create a local environment file with the project url and project API key so you can access the endpoints locally!
 
+## Setting up ESLint & Prettier for this project
+
+@MyTeam If you are using VSCode, we will be using ESLint and Prettier for formatting, these can be easily downloaded in the Extensions Tab.
+
+## Variable Naming and Other Formatting Practices
+
+@MyTeam Please use camelCase variable naming! The only exception is when writing SQL queries (the attribute names have underscores i.e. trip_name, trip_location, etc.)
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
