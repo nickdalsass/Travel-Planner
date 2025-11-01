@@ -23,10 +23,10 @@ type TripFormValues = {
 };
 
 const AddTrip = () => {
-  // get todays formatted date as a placeholder, I looked this formatting up 
+  // get todays formatted date as a placeholder, I looked this formatting up
   const today = new Date();
   const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, "0"); 
+  const month = String(today.getMonth() + 1).padStart(2, "0");
   const day = String(today.getDate()).padStart(2, "0");
   const formattedDate = `${year}-${month}-${day}`;
 
@@ -42,6 +42,7 @@ const AddTrip = () => {
   });
 
   const handleSubmit = async (values: TripFormValues) => {
+    // destructure, we already have start and end dates defined up top
     const { tripName, location } = values;
 
     // first, check if the user is logged in! to get unique id
@@ -54,17 +55,23 @@ const AddTrip = () => {
     if (!user) {
       console.error("Error fetching user:", userError);
     } else {
-      const { data: tripData, error: tripInsertError } = await supabase.from("TRIPS").insert([
-        {
-          user_id: user.id,
-          trip_name: tripName,
-          trip_location: location,
-          trip_start: departureDate,
-          trip_end: returnDate,
-        },
-      ]);
+      const { data: tripData, error: tripInsertError } = await supabase
+        .from("TRIPS")
+        .insert([
+          {
+            user_id: user.id,
+            trip_name: tripName,
+            trip_location: location,
+            trip_start: departureDate,
+            trip_end: returnDate,
+          },
+        ]);
 
-      if (tripInsertError) console.log("There was an error when inserting this trip:", tripInsertError);
+      if (tripInsertError)
+        console.log(
+          "There was an error when inserting this trip:",
+          tripInsertError
+        );
     }
 
     const homePageUrl = window.location.origin;
