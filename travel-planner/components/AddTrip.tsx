@@ -13,6 +13,7 @@ import { DateInput } from "@mantine/dates";
 import { supabase } from "@/lib/supabase/client";
 import { useForm } from "@mantine/form";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 type TripFormValues = {
   user_id: string;
@@ -23,6 +24,8 @@ type TripFormValues = {
 };
 
 const AddTrip = () => {
+  const router = useRouter();
+
   // get todays formatted date as a placeholder, I looked this formatting up
   const today = new Date();
   const year = today.getFullYear();
@@ -65,17 +68,20 @@ const AddTrip = () => {
             trip_start: departureDate,
             trip_end: returnDate,
           },
-        ]);
+        ])
+        .select()
+        .single(); //we need to select just a single row so we can route to the next page of the form
 
-      if (tripInsertError)
+      if (tripInsertError) {
         console.log(
           "There was an error when inserting this trip:",
           tripInsertError
         );
+      } else {
+        // go to the next step in the form here
+        router.push(`/trip/${tripData.id}/transportation`);
+      }
     }
-
-    const homePageUrl = window.location.origin;
-    window.location.href = homePageUrl;
   };
 
   return (

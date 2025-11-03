@@ -1,7 +1,10 @@
 // This is just a copy of the AddTrip form which I will use as a template for each part of the form
 
 // "use client";
-
+const AddItinerary = () => {
+    return <div>itinerary</div>
+}
+export default AddItinerary;
 // import {
 //   Button,
 //   Center,
