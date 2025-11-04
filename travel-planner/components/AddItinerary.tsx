@@ -1,10 +1,5 @@
-// This is just a copy of the AddTrip form which I will use as a template for each part of the form
-
 // "use client";
-const AddItinerary = () => {
-    return <div>itinerary</div>
-}
-export default AddItinerary;
+
 // import {
 //   Button,
 //   Center,
@@ -18,17 +13,24 @@ export default AddItinerary;
 // import { supabase } from "@/lib/supabase/client";
 // import { useForm } from "@mantine/form";
 // import { useState } from "react";
+// import { useRouter, useParams } from "next/navigation";
 
-// type ItineraryFormValues = {
-//   user_id: string;
-//   tripName: string;
-//   location: string;
+// type TransportationFormValues = {
+//   tripId: string;
+//   transpName: string;
+//   transpType: string;
+//   transpCompany: string;
 //   departureDate: string;
 //   returnDate: string;
+//   transpConfNum: string;
 // };
 
 // const AddItinerary = () => {
-//   // get todays formatted date as a placeholder, I looked this formatting up
+//   const router = useRouter();
+//   // handy dandy next feature to extract a unique id from the url
+//   const params = useParams();
+
+//   // get todays formatted date as a placeholder, I am reusing this
 //   const today = new Date();
 //   const year = today.getFullYear();
 //   const month = String(today.getMonth() + 1).padStart(2, "0");
@@ -38,49 +40,41 @@ export default AddItinerary;
 //   const [departureDate, setDepartureDate] = useState<string | null>(
 //     formattedDate
 //   );
-//   const [returnDate, setReturnDate] = useState<string | null>(null);
+//   const [arrivalDate, setArrivalDate] = useState<string | null>(null);
 
-//   const form = useForm<TripFormValues>({
+//   const form = useForm<TransportationFormValues>({
 //     mode: "uncontrolled",
 //     validateInputOnBlur: true,
 //     onSubmitPreventDefault: "validation-failed",
 //   });
 
-//   const handleSubmit = async (values: TripFormValues) => {
-//     // destructure, we already have start and end dates defined up top
-//     const { tripName, location } = values;
+//   const handleSubmit = async (values: TransportationFormValues) => {
+//     // destructure, we already have start and end dates defined up top, like before
+//     const { transpName, transpType, transpCompany, transpConfNum } = values;
 
-//     // first, check if the user is logged in! to get unique id
-//     const {
-//       data: { user },
-//       error: userError,
-//     } = await supabase.auth.getUser();
+//     const { error: transpInsertError } = await supabase
+//       .from("TRANSPORTATION")
+//       .insert([
+//         {
+//           trip_id: params.tripId,
+//           transp_name: transpName,
+//           transp_type: transpType,
+//           transp_company: transpCompany,
+//           transp_departure: departureDate,
+//           transp_arrival: arrivalDate,
+//           confirmation_num: transpConfNum,
+//         },
+//       ]);
 
-//     // Once we confirm the user is in, we can insert our trip!
-//     if (!user) {
-//       console.error("Error fetching user:", userError);
+//     if (transpInsertError) {
+//       console.log(
+//         "There was an error when inserting this transportation:",
+//         transpInsertError
+//       );
 //     } else {
-//       const { data: tripData, error: tripInsertError } = await supabase
-//         .from("TRIPS")
-//         .insert([
-//           {
-//             user_id: user.id,
-//             trip_name: tripName,
-//             trip_location: location,
-//             trip_start: departureDate,
-//             trip_end: returnDate,
-//           },
-//         ]);
-
-//       if (tripInsertError)
-//         console.log(
-//           "There was an error when inserting this trip:",
-//           tripInsertError
-//         );
+//       alert('Transportation details saved successfully!');
+//       router.push(`/trip/${params.tripId}/accomodations`);
 //     }
-
-//     const homePageUrl = window.location.origin;
-//     window.location.href = homePageUrl;
 //   };
 
 //   return (
@@ -89,7 +83,7 @@ export default AddItinerary;
 //         <Stack align="center">
 //           <Paper radius="md" shadow="md" withBorder bg={"#EEEEEE"} p="xl">
 //             <Stack gap="xl">
-//               <Title order={1}>Create Trip</Title>
+//               <Title order={1}>Add Transportation</Title>
 
 //               <form
 //                 onSubmit={(event) => {
@@ -99,8 +93,8 @@ export default AddItinerary;
 //               >
 //                 <Stack gap="md" w={300}>
 //                   <TextInput
-//                     name="tripName"
-//                     label="Trip Name"
+//                     name="transpName"
+//                     label="Transportation Name"
 //                     withAsterisk
 //                     required
 //                     styles={{
@@ -109,13 +103,13 @@ export default AddItinerary;
 //                       },
 //                     }}
 //                     autoComplete="off"
-//                     placeholder="Our Honeymoon"
-//                     {...form.getInputProps("tripName")}
+//                     placeholder="Greyhound to Boston"
+//                     {...form.getInputProps("transpName")}
 //                   />
 
 //                   <TextInput
-//                     name="location"
-//                     label="Location"
+//                     name="transpType"
+//                     label="Transportation Type"
 //                     withAsterisk
 //                     required
 //                     styles={{
@@ -124,8 +118,22 @@ export default AddItinerary;
 //                       },
 //                     }}
 //                     autoComplete="off"
-//                     placeholder="Paris"
-//                     {...form.getInputProps("location")}
+//                     placeholder="Plane, Train, Automobile..."
+//                     {...form.getInputProps("transpType")}
+//                   />
+
+//                   <TextInput
+//                     name="transpCompany"
+//                     label="Transportation Company"
+//                     withAsterisk
+//                     required
+//                     styles={{
+//                       input: {
+//                         borderColor: "#000000",
+//                       },
+//                     }}
+//                     autoComplete="off"
+//                     {...form.getInputProps("transpCompany")}
 //                   />
 
 //                   <DateInput
@@ -144,8 +152,8 @@ export default AddItinerary;
 //                   <DateInput
 //                     clearable
 //                     required
-//                     value={returnDate}
-//                     onChange={setReturnDate}
+//                     value={arrivalDate}
+//                     onChange={setArrivalDate}
 //                     label="Return Date"
 //                     styles={{
 //                       input: {
@@ -154,6 +162,17 @@ export default AddItinerary;
 //                     }}
 //                   />
 
+//                   <TextInput
+//                     name="transpConfNum"
+//                     label="Confirmation Number"
+//                     styles={{
+//                       input: {
+//                         borderColor: "#000000",
+//                       },
+//                     }}
+//                     autoComplete="off"
+//                     {...form.getInputProps("transpConfNum")}
+//                   />
 //                   <Group justify="center" mt="lg">
 //                     <Button type="submit">Next</Button>
 //                   </Group>
