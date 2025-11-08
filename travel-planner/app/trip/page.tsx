@@ -1,5 +1,5 @@
-import AddTrip from "@/components/AddTrip";
+import CreateTripStepper from "@/components/CreateTripStepper";
 
 export default function Home() {
-  return <AddTrip />;
+  return <CreateTripStepper />;
 }

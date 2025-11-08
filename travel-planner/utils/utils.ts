@@ -1,0 +1,17 @@
+export const TRANSPORTATION_TYPES = [
+  { value: "bus", label: "Bus" },
+  { value: "train", label: "Train" },
+  { value: "subway", label: "Subway / Metro" },
+  { value: "tram", label: "Tram / Streetcar" },
+  { value: "ferry", label: "Ferry / Boat" },
+  { value: "plane", label: "Airplane" },
+  { value: "taxi", label: "Taxi" },
+  { value: "rideshare", label: "Rideshare (Uber, Lyft, etc.)" },
+  { value: "car", label: "Personal Car" },
+  { value: "car_rental", label: "Car Rental" },
+  { value: "motorcycle", label: "Motorcycle / Moped" },
+  { value: "high_speed_train", label: "High-Speed Train" },
+  { value: "light_rail", label: "Light Rail" },
+  { value: "helicopter", label: "Helicopter" },
+  { value: "other", label: "Other" },
+];
