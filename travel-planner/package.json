@@ -10,9 +10,13 @@
   },
   "dependencies": {
     "@mantine/core": "^8.3.5",
+    "@mantine/dates": "^8.3.5",
     "@mantine/form": "^8.3.5",
     "@mantine/hooks": "^8.3.5",
+    "@react-google-maps/api": "^2.20.7",
     "@supabase/supabase-js": "^2.76.1",
+    "@types/lodash.debounce": "^4.0.9",
+    "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.548.0",
     "next": "16.0.0",
     "react": "19.2.0",
