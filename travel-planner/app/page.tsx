@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   description: "Software Engineering Final Project 2025",
 };
 
-export default async function Home() {
-  return <HomePage />;
+export default function Home() {
+  return (
+    <HomePage />
+  );
+  
 }

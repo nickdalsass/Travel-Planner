@@ -8,6 +8,7 @@ import {
   Stack,
 } from "@mantine/core";
 import { Suspense } from "react";
+import './styles.css';
 
 const HomePage = () => {
   return (

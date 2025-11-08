@@ -28,9 +28,9 @@ export default function ClientAppShell({
   const isLoginPage = pathname === "/login";
 
   return (
-    <Center>
+    <Center style={{ backgroundColor: '#eacebeff'}}>
       <AppShell
-        style={{ opacity: "unset" }}
+        style={{ opacity: "unset"}}
         header={{ height: 75 }}
         navbar={{
           width: 200,
@@ -48,6 +48,7 @@ export default function ClientAppShell({
             pr={"lg"}
             pl={"lg"}
             miw={"345px"}
+            style={{ backgroundColor: '#d5e3f9ff'}}
           >
             <Group>
               {/*Don't show navbar if you're signing up or in, to focus concern on one thing and limit options*/}
@@ -62,10 +63,12 @@ export default function ClientAppShell({
                 variant="transparent"
                 leftSection={
                   <Image
-                    src="/favicon.ico"
-                    alt="Plane icon"
-                    width={50}
-                    height={50}
+                    src="/Travel-Icon.png"
+                    alt="Travel icon"
+                    //src="/favicon.ico"
+                    //alt="Plane icon"
+                    width={65}
+                    height={65}
                     style={{ objectFit: "contain" }}
                   />
                 }
@@ -76,7 +79,9 @@ export default function ClientAppShell({
             {!isLoginPage && <ProfileButton />}
           </Group>
         </AppShellHeader>
-        <AppShellNavbar>Navbar</AppShellNavbar>
+        <AppShellNavbar>
+          Navbar
+        </AppShellNavbar>
         <AppShellMain>{children}</AppShellMain>
       </AppShell>
     </Center>
