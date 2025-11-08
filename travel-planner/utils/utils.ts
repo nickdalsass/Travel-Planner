@@ -15,3 +15,21 @@ export const TRANSPORTATION_TYPES = [
   { value: "helicopter", label: "Helicopter" },
   { value: "other", label: "Other" },
 ];
+
+// Gmaps Autocomplete sketchy initialization... might need work
+let autocompleteService: google.maps.places.AutocompleteService | null = null;
+
+export const getAutocompleteService =
+  (): google.maps.places.AutocompleteService => {
+    if (
+      !autocompleteService &&
+      typeof window !== "undefined" &&
+      window.google?.maps?.places
+    ) {
+      autocompleteService = new google.maps.places.AutocompleteService();
+    } else if (!autocompleteService) {
+      throw new Error("Google Maps API not loaded");
+    }
+
+    return autocompleteService;
+  };

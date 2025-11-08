@@ -18,6 +18,7 @@ import { supabase } from "@/lib/supabase/client";
 import { DateInput } from "@mantine/dates";
 import { TRANSPORTATION_TYPES } from "@/utils/utils";
 import { TripFormValues } from "@/app/types/types";
+import AddressAutocomplete from "./AddressAutocomplete";
 
 const CreateTripStepper = () => {
   const [active, setActive] = useState(0);
@@ -86,7 +87,7 @@ const CreateTripStepper = () => {
 
   const addAccommodationItem = () => {
     if (form.values.accommodationItems.length < 3) {
-      form.insertListItem('accommodationItems', {
+      form.insertListItem("accommodationItems", {
         accomType: "",
         accomDescription: "",
         accomAddress: "",
@@ -99,7 +100,7 @@ const CreateTripStepper = () => {
 
   const removeAccommodationItem = (index: number) => {
     if (form.values.accommodationItems.length > 1) {
-      form.removeListItem('accommodationItems', index);
+      form.removeListItem("accommodationItems", index);
     }
   };
 
@@ -163,7 +164,10 @@ const CreateTripStepper = () => {
         break;
       case 3:
         // remove empty itinerary steps before moving on
-        form.setFieldValue('itinSteps', form.values.itinSteps?.filter(step => step.trim() !== '') || []);
+        form.setFieldValue(
+          "itinSteps",
+          form.values.itinSteps?.filter((step) => step.trim() !== "") || []
+        );
         stepFields = ["itinSteps"];
         break;
       case 4:
@@ -432,7 +436,16 @@ const CreateTripStepper = () => {
         <Stepper.Step label="Add Accommodations">
           <Stack align="center">
             {form.values.accommodationItems.map((_, index) => (
-              <Card key={index} withBorder pt={"xs"} pr="md" pb="md" pl="md" w={500} style={{ position: 'relative' }}>
+              <Card
+                key={index}
+                withBorder
+                pt={"xs"}
+                pr="md"
+                pb="md"
+                pl="md"
+                w={500}
+                style={{ position: "relative" }}
+              >
                 <Group justify="space-between" mb="md">
                   {form.values.accommodationItems.length > 1 && (
                     <Button
@@ -440,13 +453,13 @@ const CreateTripStepper = () => {
                       color="red"
                       size="xs"
                       onClick={() => removeAccommodationItem(index)}
-                      style={{ position: 'absolute', top: 10, right: 10 }}
+                      style={{ position: "absolute", top: 10, right: 10 }}
                     >
                       Remove
                     </Button>
                   )}
                 </Group>
-                
+
                 <Stack gap="sm">
                   <TextInput
                     label="Type"
@@ -454,40 +467,48 @@ const CreateTripStepper = () => {
                     required
                     autoComplete="off"
                     placeholder="Hotel, AirBnB, Hostel..."
-                    {...form.getInputProps(`accommodationItems.${index}.accomType`)}
+                    {...form.getInputProps(
+                      `accommodationItems.${index}.accomType`
+                    )}
                   />
-
                   <TextInput
                     label="Description"
                     autoComplete="off"
                     placeholder="Hotel with Balcony View..."
-                    {...form.getInputProps(`accommodationItems.${index}.accomDescription`)}
+                    {...form.getInputProps(
+                      `accommodationItems.${index}.accomDescription`
+                    )}
                   />
 
-                  <TextInput
+                  <AddressAutocomplete
                     label="Address"
-                    placeholder="Enter an address..."
-                    {...form.getInputProps(`accommodationItems.${index}.accomAddress`)}
+                    placeholder="Start Typing an Address..."
+                    {...form.getInputProps(
+                      `accommodationItems.${index}.accomAddress`
+                    )}
                   />
-
                   <DateInput
                     clearable
                     required
                     label="Check-In Date"
-                    {...form.getInputProps(`accommodationItems.${index}.accomCheckinDate`)}
+                    {...form.getInputProps(
+                      `accommodationItems.${index}.accomCheckinDate`
+                    )}
                   />
-
                   <DateInput
                     clearable
                     required
                     label="Check-Out Date"
-                    {...form.getInputProps(`accommodationItems.${index}.accomCheckOutDate`)}
+                    {...form.getInputProps(
+                      `accommodationItems.${index}.accomCheckOutDate`
+                    )}
                   />
-
                   <TextInput
                     label="Confirmation Number"
                     autoComplete="off"
-                    {...form.getInputProps(`accommodationItems.${index}.accomConfNum`)}
+                    {...form.getInputProps(
+                      `accommodationItems.${index}.accomConfNum`
+                    )}
                   />
                 </Stack>
               </Card>
@@ -505,7 +526,6 @@ const CreateTripStepper = () => {
           </Stack>
         </Stepper.Step>
 
-
         <Stepper.Step label="Add Itinerary">
           <Stack align="center" mt="xl">
             {form.values.itinSteps.map((step, index) => (
@@ -521,7 +541,7 @@ const CreateTripStepper = () => {
                   onClick={() => {
                     const newSteps = [...form.values.itinSteps];
                     newSteps.splice(index, 1);
-                    form.setFieldValue('itinSteps', newSteps);
+                    form.setFieldValue("itinSteps", newSteps);
                   }}
                   disabled={form.values.itinSteps.length === 1}
                 >
@@ -544,7 +564,7 @@ const CreateTripStepper = () => {
             <Text size="xl" fw={500} mb="md">
               Review Your Trip Details
             </Text>
-            <Code block style={{ width: '100%', maxWidth: '800px' }}>
+            <Code block style={{ width: "100%", maxWidth: "800px" }}>
               {JSON.stringify(form.getValues(), null, 2)}
             </Code>
           </Stack>
