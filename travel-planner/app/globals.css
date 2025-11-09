@@ -7,3 +7,37 @@
   font-size: 16px !important;
   line-height: 1.5 !important;
 }
+
+.embla {
+  overflow: hidden;
+  user-select: none;
+}
+.embla__container {
+  margin-left: 20;
+  display: flex;
+  padding: 2rem 0;
+  gap: 2rem;
+}
+.embla__slide {
+  flex: 0 0 38%;
+  transition: all 0.3s ease;
+}
+.embla__slide:hover {
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-50%); 
+    opacity: 0; 
+  }
+  to {
+    transform: translateX(0); 
+    opacity: 1; 
+  }
+}
+
+.slide-element {
+  animation: slideInFromLeft 1s ease-out forwards;
+}
