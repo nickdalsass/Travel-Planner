@@ -23,7 +23,7 @@ const ImageDisplay = () => {
             <Image
               src="/images/bus.jpg"
               alt="Bus Image"
-              width={500}
+              width={525}
               height={700}
               style={{ borderRadius: "2rem" }}
             />
@@ -32,7 +32,7 @@ const ImageDisplay = () => {
             <Image
               src="/images/fancy-hotel.jpg"
               alt="Hotel Image"
-              width={500}
+              width={525}
               height={700}
               style={{ borderRadius: "2rem" }}
             />
@@ -41,16 +41,16 @@ const ImageDisplay = () => {
             <Image
               src="/images/arial-city.jpg"
               alt="Arial City Image"
-              width={500}
+              width={525}
               height={700}
               style={{ borderRadius: "2rem" }}
             />
           </div>
           <div className="embla__slide">
-            <Image
+            <Image  
               src="/images/snow-mountains.jpg"
               alt="Snowy Mountains Image"
-              width={500}
+              width={525}
               height={700}
               style={{ borderRadius: "2rem" }}
             />
@@ -59,7 +59,7 @@ const ImageDisplay = () => {
             <Image
               src="/images/city-street.jpg"
               alt="City Image"
-              width={500}
+              width={525}
               height={700}
               style={{ borderRadius: "2rem" }}
             />
@@ -68,7 +68,7 @@ const ImageDisplay = () => {
             <Image
               src="/images/airplane.jpg"
               alt="Airplane Image"
-              width={500}
+              width={525}
               height={700}
               style={{ borderRadius: "2rem" }}
             />
