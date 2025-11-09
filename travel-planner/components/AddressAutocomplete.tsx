@@ -31,7 +31,7 @@ export default function AddressAutocomplete({
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: "AIzaSyDFNaQ5VcXCh6l0LBmAuMylIj0OZ4AUjqA",
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
     libraries: LIBRARIES,
   });
 

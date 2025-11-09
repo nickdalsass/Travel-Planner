@@ -28,7 +28,7 @@ export default function ClientAppShell({
   const isLoginPage = pathname === "/login";
 
   return (
-    <Center style={{ backgroundColor: '#eacebeff'}}>
+    <Center style={{ backgroundColor: "#eacebeff" }}>
       <AppShell
         style={{ opacity: "unset"}}
         header={{ height: 75 }}
@@ -44,11 +44,8 @@ export default function ClientAppShell({
           <Group
             justify={"space-between"}
             h={"100%"}
-            w={"100%"}
             pr={"lg"}
             pl={"lg"}
-            miw={"345px"}
-            style={{ backgroundColor: '#d5e3f9ff'}}
           >
             <Group>
               {/*Don't show navbar if you're signing up or in, to focus concern on one thing and limit options*/}
@@ -65,9 +62,7 @@ export default function ClientAppShell({
                   <Image
                     src="/Travel-Icon.png"
                     alt="Travel icon"
-                    //src="/favicon.ico"
-                    //alt="Plane icon"
-                    width={65}
+                    width={75}
                     height={65}
                     style={{ objectFit: "contain" }}
                   />
