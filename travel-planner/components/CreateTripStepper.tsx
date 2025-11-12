@@ -577,12 +577,12 @@ const CreateTripStepper = () => {
             Back
           </Button>
         )}
-        {active < 3 ? (
-          <Button type="button" onClick={nextStep}>
+        {active < 3 ?  (
+          <Button  type="button" onClick={nextStep} color="#b8626cff" >
             Next step
           </Button>
         ) : active === 3 ? (
-          <Button type="button" onClick={nextStep}>
+          <Button type="button" onClick={nextStep} color="#b8626cff">
             Review Trip
           </Button>
         ) : (
@@ -590,7 +590,7 @@ const CreateTripStepper = () => {
             <Button
               type="button"
               loading={form.submitting}
-              color="green"
+              color="#3f8343ff"
               onClick={() => handleSubmit(form.values)}
             >
               {form.submitting ? "Creating Trip..." : "Create Trip"}

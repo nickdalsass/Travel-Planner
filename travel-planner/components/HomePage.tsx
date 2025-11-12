@@ -15,7 +15,7 @@ export default function HomePage() {
       >
         <Group justify="center">
           <Anchor href="/trip">
-            <Button size="lg">Create a Trip</Button>
+            <Button color="#b8626cff" size="lg">Create a Trip</Button>
           </Anchor>
         </Group>
       </Paper>

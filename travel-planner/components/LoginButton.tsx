@@ -12,9 +12,10 @@ export const LoginButton = () => {
   };
 
   return (
-    <Button
+    <Button 
       h={"70%"}
       variant="filled"
+      color= "#734242ff"
       radius={"xl"}
       rightSection={<User />}
       onClick={handleClick}
