@@ -26,7 +26,8 @@ export const LogoutButton = (
     if (error) {
       alert(error.message);
     } else {
-      location.reload();
+      // full page reload to ensure all auth state is cleared and returns to home if they are in the middle of a form
+      window.location.href = '/';
     }
   };
   return (

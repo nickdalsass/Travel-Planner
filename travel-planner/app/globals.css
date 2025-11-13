@@ -13,17 +13,17 @@
   user-select: none;
 }
 .embla__container {
-  margin-left: 20;
   display: flex;
-  padding: 2rem 0;
+  padding: 1rem;
   gap: 2rem;
 }
 .embla__slide {
-  flex: 0 0 38%;
-  transition: all 0.3s ease;
+  flex: 0 0 50%;
+  transition: 0.3s ease;
+  opacity: 0.9;
 }
 .embla__slide:hover {
-  transform: scale(1.05);
+  transform: scale(1.01);
   opacity: 1;
 }
 
@@ -40,4 +40,33 @@
 
 .slide-element {
   animation: slideInFromRight 1s ease-out forwards;
+}
+
+/*simple typing effect, looks neat*/
+.typewriter {
+  font-size: 2rem;
+  margin: 0 auto;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 1px solid;
+  width: fit-content;
+  animation: typing 3s steps(50, end), blink-caret 1s step-end infinite;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 27ch;
+  }
+}
+
+@keyframes blink-caret {
+  from, to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: black;
+  }
 }

@@ -26,11 +26,10 @@ const possibleColors = [
   '#cb89e6',
   '#ff92c2',
   '#ffad6b',
-  '#7dbbff',
   '#ccccff',
 ];
 
-export const ProfileButton = () => {
+const ProfileButton = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 

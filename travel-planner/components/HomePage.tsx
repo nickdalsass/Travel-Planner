@@ -1,6 +1,6 @@
-import { Group, Button, Paper, Stack, Anchor, Skeleton, Container } from '@mantine/core';
-import { Suspense } from 'react';
+import { Group, Paper, Stack, Container, Title } from '@mantine/core';
 import ImageDisplay from './ImageDisplay';
+import CreateTripButton from './CreateTripButton';
 
 export default function HomePage() {
   return (
@@ -14,17 +14,14 @@ export default function HomePage() {
         style={{ flexShrink: 0 }}
       >
         <Group justify="center">
-          <Anchor href="/trip">
-            <Button color="#b8626cff" size="lg">Create a Trip</Button>
-          </Anchor>
+          <CreateTripButton />
         </Group>
       </Paper>
 
-      <div style={{ flex: 1, overflowY: 'auto' }}>
-        <Stack>
-          <ImageDisplay />
-        </Stack>
-      </div>
+      <Stack>
+        <Title className='typewriter'>Sign In To Start Your Adventure...</Title>
+        <ImageDisplay />
+      </Stack>
     </Container>
   );
 }

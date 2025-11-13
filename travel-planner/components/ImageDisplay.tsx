@@ -9,8 +9,7 @@ const ImageDisplay = () => {
     {
       align: "center",
       dragFree: false,
-      watchDrag: false,
-      skipSnaps: true,
+      startIndex: 1,
     },
     [Autoplay()]
   );
