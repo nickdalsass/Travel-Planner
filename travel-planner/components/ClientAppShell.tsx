@@ -54,7 +54,7 @@ export default function ClientAppShell({
               )}
               <Button
                 onClick={() => router.push("/")}
-                h={75}
+                h={70}
                 ff="monospace"
                 color="black"
                 variant="transparent"
