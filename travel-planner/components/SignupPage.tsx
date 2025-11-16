@@ -166,7 +166,7 @@ const SignupPage = () => {
                   />
 
                   <Group justify="center" mt="lg">
-                    <Button type="submit">Sign Up</Button>
+                    <Button type="submit" color="#b8626cff">Sign Up</Button>
                   </Group>
                 </Stack>
               </form>

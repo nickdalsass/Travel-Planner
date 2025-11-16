@@ -10,31 +10,43 @@
 
 .embla {
   overflow: hidden;
-  user-select: none;
+  width: 100%;
+  padding: 1rem 0;
 }
 .embla__container {
   display: flex;
-  padding: 1rem;
+  align-items: center;
   gap: 2rem;
 }
 .embla__slide {
-  flex: 0 0 50%;
+  flex: 0 0 auto;
   transition: 0.3s ease;
   opacity: 0.9;
+  margin: 0 auto;
+  padding: 0 0.5%;
 }
 .embla__slide:hover {
   transform: scale(1.01);
   opacity: 1;
 }
 
+/* make sure the image cant be dragged */
+.embla__slide img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-select: none;
+}
+
 @keyframes slideInFromRight {
   from {
-    transform: translateX(50%); 
-    opacity: 0; 
+    transform: translateX(50%);
+    opacity: 0;
   }
   to {
-    transform: translateX(0); 
-    opacity: 1; 
+    transform: translateX(0);
+    opacity: 1;
   }
 }
 
@@ -63,7 +75,8 @@
 }
 
 @keyframes blink-caret {
-  from, to {
+  from,
+  to {
     border-color: transparent;
   }
   50% {

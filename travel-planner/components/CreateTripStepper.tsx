@@ -16,19 +16,14 @@ import { useForm } from "@mantine/form";
 import { Plus } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
 import { DateInput } from "@mantine/dates";
-import { TRANSPORTATION_TYPES } from "@/utils/utils";
+import { TRANSPORTATION_TYPES, formatTodaysDate } from "@/utils/utils";
 import { TripFormValues } from "@/app/types/types";
 import AddressAutocomplete from "./AddressAutocomplete";
 
 const CreateTripStepper = () => {
   const [active, setActive] = useState(0);
 
-  // get todays formatted date as a placeholder, I looked this formatting up
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, "0");
-  const day = String(today.getDate()).padStart(2, "0");
-  const formattedDate = `${year}-${month}-${day}`;
+  const formattedDate = formatTodaysDate();
 
   const form = useForm<TripFormValues>({
     initialValues: {
@@ -292,9 +287,9 @@ const CreateTripStepper = () => {
 
   return (
     <form onSubmit={(e) => e.preventDefault()}>
-      <Stepper active={active} allowNextStepsSelect={false}>
+      <Stepper active={active} allowNextStepsSelect={false} color="#b8626c">
         <Stepper.Step label="Name Trip">
-          <Stack align="center" mt={"xs"}>
+          <Stack align="center">
             <TextInput
               w={400}
               label="Trip Name"
@@ -416,8 +411,8 @@ const CreateTripStepper = () => {
 
             <Group justify="center">
               <Button
-                variant="outline"
                 leftSection={<Plus />}
+                color="#b8626c"
                 onClick={addTransportationItem}
                 disabled={(form.values.transportationItems?.length || 0) >= 4}
                 title={
@@ -515,7 +510,7 @@ const CreateTripStepper = () => {
             ))}
 
             <Button
-              variant="outline"
+              color="#b8626c"
               leftSection={<Plus size={16} />}
               onClick={addAccommodationItem}
               disabled={form.values.accommodationItems.length >= 3}
@@ -550,7 +545,7 @@ const CreateTripStepper = () => {
               </Group>
             ))}
             <Button
-              variant="outline"
+              color="#b8626c"
               leftSection={<Plus />}
               onClick={() => form.insertListItem("itinSteps", "")}
               mt="md"

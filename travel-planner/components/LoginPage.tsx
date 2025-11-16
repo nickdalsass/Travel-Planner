@@ -95,7 +95,7 @@ const LoginPage = () => {
                     {...form.getInputProps("password")}
                   />
                   <Group justify="center" mt="lg">
-                    <Button type="submit">Log In</Button>
+                    <Button type="submit" color="#b8626cff">Log In</Button>
                   </Group>
                 </Stack>
               </form>

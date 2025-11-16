@@ -8,11 +8,13 @@ const ImageDisplay = () => {
   const [emblaRef] = useEmblaCarousel(
     {
       align: "center",
-      dragFree: false,
+      skipSnaps: true,
       startIndex: 1,
+      watchDrag: false,
     },
     [Autoplay()]
   );
+
 
   return (
     <div className="slide-element">
@@ -25,6 +27,7 @@ const ImageDisplay = () => {
               width={525}
               height={700}
               style={{ borderRadius: "2rem" }}
+              draggable={false}
             />
           </div>
           <div className="embla__slide">
@@ -34,6 +37,7 @@ const ImageDisplay = () => {
               width={525}
               height={700}
               style={{ borderRadius: "2rem" }}
+              draggable={false}
             />
           </div>
           <div className="embla__slide">
@@ -43,6 +47,7 @@ const ImageDisplay = () => {
               width={525}
               height={700}
               style={{ borderRadius: "2rem" }}
+              draggable={false}
             />
           </div>
           <div className="embla__slide">
@@ -52,6 +57,7 @@ const ImageDisplay = () => {
               width={525}
               height={700}
               style={{ borderRadius: "2rem" }}
+              draggable={false}
             />
           </div>
           <div className="embla__slide">
@@ -61,6 +67,7 @@ const ImageDisplay = () => {
               width={525}
               height={700}
               style={{ borderRadius: "2rem" }}
+              draggable={false}
             />
           </div>
           <div className="embla__slide">
@@ -70,6 +77,7 @@ const ImageDisplay = () => {
               width={525}
               height={700}
               style={{ borderRadius: "2rem" }}
+              draggable={false}
             />
           </div>
         </div>
