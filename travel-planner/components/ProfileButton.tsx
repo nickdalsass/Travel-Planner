@@ -15,6 +15,8 @@ import { LoginButton } from "@/components/LoginButton";
 import { LogoutButton } from '@/components/LogoutButton';
 import { User } from '@supabase/supabase-js';
 import { LogOut, NotebookPen, NotebookText } from 'lucide-react';
+import ViewCreatedTripsButton from './ViewCreatedTripsButton';
+import ProfileCreateTrip from './ProfileCreateTrip';
 
 const nameToNumber = (name: string) => {
   return [...name].reduce((sum, char) => char.charCodeAt(0) + sum, 0);
@@ -69,8 +71,8 @@ const ProfileButton = () => {
 
       <MenuDropdown>
         <MenuLabel>Trips</MenuLabel>
-        <MenuItem leftSection={<NotebookPen />}>Create a Trip</MenuItem>
-        <MenuItem leftSection={<NotebookText />}>Created Trips</MenuItem>
+        <MenuItem component={ProfileCreateTrip} leftSection={<NotebookPen />}>Create a Trip</MenuItem>
+        <MenuItem component={ViewCreatedTripsButton} leftSection={<NotebookText />}>Created Trips</MenuItem>
         <MenuDivider />
         <MenuLabel>Account</MenuLabel>
         <MenuItem component={LogoutButton} leftSection={<LogOut />}>
