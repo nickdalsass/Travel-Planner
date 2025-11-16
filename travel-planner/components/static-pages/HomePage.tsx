@@ -1,6 +1,6 @@
 import { Group, Paper, Stack, Container, Title } from '@mantine/core';
-import ImageDisplay from './ImageDisplay';
-import CreateTripButton from './CreateTripButton';
+import ImageDisplay from '../ImageDisplay';
+import CreateTripButton from '../CreateTripButton';
 
 export default function HomePage() {
   return (

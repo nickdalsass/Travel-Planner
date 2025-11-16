@@ -12,7 +12,7 @@ import {
   MenuTarget,
 } from '@mantine/core';
 import { LoginButton } from "@/components/LoginButton";
-import { LogoutButton } from '@/components/LogoutButton';
+import { LogoutButton } from '@/components/profile-dropdown/LogoutButton';
 import { User } from '@supabase/supabase-js';
 import { LogOut, NotebookPen, NotebookText } from 'lucide-react';
 import ViewCreatedTripsButton from './ViewCreatedTripsButton';

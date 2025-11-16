@@ -1,4 +1,4 @@
-import HomePage from "@/components/HomePage";
+import HomePage from "@/components/static-pages/HomePage";
 import { Metadata } from "next";
 
 // metadata can only come from a ssr component I guess... I moved this from layout.tsx

@@ -14,7 +14,7 @@ import {
 import Image from "next/image";
 import { useDisclosure } from "@mantine/hooks";
 import { usePathname, useRouter } from "next/navigation";
-import ProfileButton from "@/components/ProfileButton";
+import ProfileButton from "@/components/profile-dropdown/ProfileButton";
 
 export default function ClientAppShell({
   children,
