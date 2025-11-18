@@ -2,7 +2,6 @@
 
 import { supabase } from "@/lib/supabase/client";
 import {
-  Anchor,
   Button,
   Center,
   Group,
@@ -173,7 +172,7 @@ const SignupPage = () => {
             </Stack>
           </Paper>
           <p style={{ marginTop: "20px" }}>
-            Have an account? <Anchor href="/login">Log In</Anchor>
+            Have an account? <a href="/login">Log In</a>
           </p>
         </Stack>
       </Center>

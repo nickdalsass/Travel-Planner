@@ -1,7 +1,7 @@
 "use client";
 
 import { supabase } from "@/lib/supabase/client";
-import { Button, Anchor, Loader } from "@mantine/core";
+import { Button, Loader } from "@mantine/core";
 import { User } from "@supabase/supabase-js";
 import { LockKeyhole, Wrench } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -32,17 +32,22 @@ const CreateTripButton = () => {
 
   if (!user) {
     return (
-      <Anchor href="/login">
-        <Button size="lg" color="#b8626cff" leftSection={<LockKeyhole />}>
-          Login to Create a Trip
-        </Button>
-      </Anchor>
+      <Button
+        component="a"
+        href="/login"
+        size="lg"
+        color="#b8626cff"
+        leftSection={<LockKeyhole />}
+      >
+        Login to Create a Trip
+      </Button>
     );
   }
 
   return (
-    <Anchor href="/trip">
       <Button
+        component="a"
+        href="/trip"
         size="lg"
         color="#b8626cff"
         draggable="false"
@@ -50,7 +55,6 @@ const CreateTripButton = () => {
       >
         Create a Trip
       </Button>
-    </Anchor>
   );
 };
 export default CreateTripButton;
