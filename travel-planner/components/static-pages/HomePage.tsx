@@ -22,8 +22,7 @@ export default function HomePage() {
       setLoading(false);
     };
     getUser();
-  }, []
-  );
+  },[]);
 
   return (
     <Container size="lg" p={0} style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
