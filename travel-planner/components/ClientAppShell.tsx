@@ -15,6 +15,7 @@ import Image from "next/image";
 import { useDisclosure } from "@mantine/hooks";
 import { usePathname, useRouter } from "next/navigation";
 import ProfileButton from "@/components/profile-dropdown/ProfileButton";
+import HelpModal from "@/components/HelpModal";
 
 export default function ClientAppShell({
   children,
@@ -50,8 +51,10 @@ export default function ClientAppShell({
             <Group>
               {/*Don't show navbar if you're signing up or in, to focus concern on one thing and limit options*/}
               {!isLoginPage && !isSignupPage && (
-                <Burger opened={opened} onClick={toggle} />
+                //<Burger opened={opened} onClick={toggle} />
+                <HelpModal/>
               )}
+
               <Button
                 onClick={() => router.push("/")}
                 h={70}
@@ -74,9 +77,9 @@ export default function ClientAppShell({
             {!isLoginPage && <ProfileButton />}
           </Group>
         </AppShellHeader>
-        <AppShellNavbar>
-          Navbar
-        </AppShellNavbar>
+        {/*<AppShellNavbar p="md">
+          navbar
+        </AppShellNavbar>*/}
         <AppShellMain>{children}</AppShellMain>
       </AppShell>
     </Center>
