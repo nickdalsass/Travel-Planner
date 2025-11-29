@@ -52,6 +52,7 @@ export default function ClientAppShell({
               {/*Don't show navbar if you're signing up or in, to focus concern on one thing and limit options*/}
               {!isLoginPage && !isSignupPage && (
                 //<Burger opened={opened} onClick={toggle} />
+                //This is the "button" for the modal, we can change the image or borders and stuff
                 <HelpModal/>
               )}
 

@@ -9,21 +9,33 @@
 }
 
 .embla {
-  overflow: hidden;
+  /*overflow: hidden;
   width: 100%;
-  padding: 1rem 0;
+  height:100%;
+  padding: 1rem 0;*/
+  margin: 0 auto;
+  max-width:700px;
 }
 .embla__container {
   display: flex;
-  align-items: center;
-  gap: 2rem;
+  /*align-items: center;
+  */
+  height:100%;
+  gap: 8rem;
 }
 .embla__slide {
-  flex: 0 0 auto;
+  /*flex: 0 0 auto;
+  justify-content: center;
+  align-items:center;
   transition: 0.3s ease;
   opacity: 0.9;
   margin: 0 auto;
-  padding: 0 0.5%;
+  padding: 0 0.5%;*/
+  
+  flex: 0 0 100%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }
 .embla__slide:hover {
   transform: scale(1.01);
@@ -38,6 +50,29 @@
   -o-user-drag: none;
   user-select: none;
 }
+.image-wrapper{
+  position: relative;
+  /*height: 525px;
+  width: 700px;
+  margin: 0 auto;*/
+  width:100%;
+  height:100%;
+}
+.image-text{
+  position: absolute;
+  /*top: 20px;*/
+  top:5%;
+  left: 30%;
+  transform: translateX(-50%);
+  color: rgb(255, 255, 255);
+  font-size: 20px;
+  font-weight: bold;
+  background: rgb(144, 138, 138);
+  padding: 8px 16px;
+  border-radius: 12px;
+  
+  
+}
 
 @keyframes slideInFromRight {
   from {
@@ -51,7 +86,13 @@
 }
 
 .slide-element {
-  animation: slideInFromRight 1s ease-out forwards;
+  /*animation: slideInFromRight 1s ease-out forwards;*/
+  width: 100%;
+  height:100vh;
+  display:flex;
+  justify-content: center;
+  align-items:center;
+  overflow:hidden;
 }
 
 /*simple typing effect, looks neat*/
