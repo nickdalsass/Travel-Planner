@@ -2,7 +2,7 @@
 
 import { useDisclosure } from '@mantine/hooks';
 import { Modal, ActionIcon, Stack } from '@mantine/core';
-import {HelpCircle} from "lucide-react";
+import {Bold, HelpCircle} from "lucide-react";
 
 export default function HelpModal() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -13,7 +13,7 @@ export default function HelpModal() {
         <Modal.Overlay />
         <Modal.Content>
           <Modal.Header>
-            <Modal.Title>Helpful Information</Modal.Title>
+            <Modal.Title style={{fontWeight: "bold"}}>Helpful Information</Modal.Title>
             <Modal.CloseButton />
           </Modal.Header>
           <Modal.Body>
@@ -25,6 +25,17 @@ export default function HelpModal() {
                 <div>
                     - Once logged-in you will be able to create trips, view trips, edit trips, and share trip details
                 </div> 
+                <div>
+                  <div style={{fontWeight: "bold"}}>
+                  Creating a trip
+                  </div>
+                  <div>
+                    - Asteriks indicate a required field
+                  </div>
+                  <div>
+                    - Select from the drop down menue, when adding a transportation type
+                  </div>
+                </div>
                 <div>
                     -other info...
                 </div>
