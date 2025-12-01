@@ -124,3 +124,11 @@
     border-color: black;
   }
 }
+
+.tripPage{
+  background-color:rgb(189, 141, 129);
+  color: white;
+  text-align:center;
+  font-weight: bold;
+  font-size: xx-large;
+}
