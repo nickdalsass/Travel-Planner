@@ -8,15 +8,21 @@ import {
   TextInput,
   Stack,
   Select,
-  Code,
   Card,
   Text,
+  Paper,
+  List,
+  Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Plus } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
 import { DateInput } from "@mantine/dates";
-import { TRANSPORTATION_TYPES, formatTodaysDate } from "@/utils/utils";
+import {
+  TRANSPORTATION_TYPES,
+  capitalizeFirstChar,
+  formatTodaysDate,
+} from "@/utils/utils";
 import { TripFormValues } from "@/app/types/types";
 import AddressAutocomplete from "./AddressAutocomplete";
 
@@ -272,7 +278,6 @@ const CreateTripStepper = () => {
       if (itinInsertError) throw itinInsertError;
 
       // if everything works (hopefully), we return to homepage
-      alert("Trip created successfully!");
       window.location.href = window.origin;
     } catch (error) {
       alert(
@@ -284,6 +289,11 @@ const CreateTripStepper = () => {
       );
     }
   };
+
+  //create variables for the transportation and accomodation and itin items
+  const transportationItems = form.values.transportationItems;
+  const accomodationItems = form.values.accommodationItems;
+  const itineraryItems = form.values.itinSteps;
 
   return (
     <form onSubmit={(e) => e.preventDefault()}>
@@ -556,12 +566,78 @@ const CreateTripStepper = () => {
         </Stepper.Step>
         <Stepper.Completed>
           <Stack align="center">
-            <Text size="xl" fw={500} mb="md">
-              Review Your Trip Details
-            </Text>
-            <Code block style={{ width: "100%", maxWidth: "800px" }}>
-              {JSON.stringify(form.getValues(), null, 2)}
-            </Code>
+            <Title>Review Your Trip Details</Title>
+
+            <Paper p={40} w={"75%"}>
+              <Stack>
+                <Title fw={"bolder"}>Name Trip</Title>
+                <List>
+                  <List.Item>
+                    <i>Trip Name:</i> {capitalizeFirstChar(form.values.tripName)}
+                  </List.Item>
+                  <List.Item>
+                    <i>Location:</i> {capitalizeFirstChar(form.values.location)}
+                  </List.Item>
+                  <List.Item>
+                    <i>Trip Departure Date:</i> {form.values.tripLeaveDate}
+                  </List.Item>
+                  <List.Item>
+                    <i>Trip Return Date:</i> {form.values.tripReturnDate}
+                  </List.Item>
+                </List>
+                <Title fw={"bolder"}>Add Transportation</Title>
+                {transportationItems.map((item, ii) => (
+                  <div key={ii}>
+                    <Text fw={"bold"}>Transportation Mode #{ii + 1}</Text>
+                    <List ml={"lg"}>
+                      <List.Item><i>Type:</i> {capitalizeFirstChar(item.transpType)}</List.Item>
+                      <List.Item><i>Company:</i> {capitalizeFirstChar(item.transpCompany)}</List.Item>
+                      <List.Item>
+                        <i>Departure:</i> {String(item.transpDepartureDate)}
+                      </List.Item>
+                      <List.Item>
+                        <i>Arrival:</i> {String(item.transpArrivalDate)}
+                      </List.Item>
+                      <List.Item>
+                        <i>Confirmation Number:</i>{" "}
+                        {item.transpConfNum || "Not provided"}
+                      </List.Item>
+                    </List>
+                  </div>
+                ))}
+                <Title fw={"bolder"}>Add Accommodations</Title>
+                {accomodationItems.map((accom, ii) => (
+                  <div key={ii}>
+                    <Text fw={"bold"}>Accomodation #{ii + 1}</Text>
+                    <List ml={"lg"}>
+                      <List.Item><i>Type:</i> {capitalizeFirstChar(accom.accomType)}</List.Item>
+                      <List.Item>
+                        <i>Description:</i> {capitalizeFirstChar(accom.accomDescription) || "Not provided"}
+                      </List.Item>
+                      <List.Item>
+                        <i>Address:</i> {accom.accomAddress || "Not Provided"}
+                      </List.Item>
+                      <List.Item>
+                        <i>Checkin Date:</i> {String(accom.accomCheckinDate)}
+                      </List.Item>
+                      <List.Item>
+                        <i>Checkout Date:</i> {String(accom.accomCheckOutDate)}
+                      </List.Item>
+                      <List.Item>
+                        <i>Confirmation Number:</i>{" "}
+                        {accom.accomConfNum || "Not provided"}
+                      </List.Item>
+                    </List>
+                  </div>
+                ))}
+                <Title fw={"bolder"}>Add Itinerary</Title>
+                {itineraryItems.length > 0 ? itineraryItems.map((itinItem, ii) => (
+                  <List key={ii} ml={"lg"} mt={0}>
+                      <List.Item>{itinItem || "Not provided"}</List.Item>
+                    </List>
+                )): <i>No Itinerary Provided</i>}
+              </Stack>
+            </Paper>
           </Stack>
         </Stepper.Completed>
       </Stepper>
@@ -572,8 +648,8 @@ const CreateTripStepper = () => {
             Back
           </Button>
         )}
-        {active < 3 ?  (
-          <Button  type="button" onClick={nextStep} color="#b8626cff" >
+        {active < 3 ? (
+          <Button type="button" onClick={nextStep} color="#b8626cff">
             Next step
           </Button>
         ) : active === 3 ? (
