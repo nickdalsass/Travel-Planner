@@ -30,8 +30,8 @@ export default function HomePage() {
         withBorder
         shadow="sm"
         radius="md"
+        mb="xl"
         p="md"
-        mb="md"
         style={{ flexShrink: 0 }}
       >
         <Group justify="center">
@@ -39,7 +39,7 @@ export default function HomePage() {
         </Group>
       </Paper>
     
-        <Stack>
+        <Stack gap={0}>
           {!loading && !user && (
           <Title className='typewriter'>Sign In To Start Your Adventure...</Title>
           )}
