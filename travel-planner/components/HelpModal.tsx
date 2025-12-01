@@ -33,7 +33,7 @@ export default function HelpModal() {
                     - Asteriks indicate a required field
                   </div>
                   <div>
-                    - Select from the drop down menue, when adding a transportation type
+                    - Select from the drop down menu, when adding a transportation type
                   </div>
                 </div>
                 <div>
