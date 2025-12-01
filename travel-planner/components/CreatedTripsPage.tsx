@@ -26,7 +26,7 @@ type Accommodation = {
   confirmation_num: string;
   accom_description: string;
 };
-type Itinterary = {
+type Itinerary = {
   id: number;
   itin_steps: string;
 };
@@ -130,8 +130,9 @@ export default function CreatedTripsPage() {
         p="md"
         mb="md"
         style={{ flexShrink: 0 }}
+        
       >
-        <Text size="xl" fw={600}>Your Trips</Text>
+        <Text className="tripPage" >Created Trips</Text>
       </Paper>
 
       <Stack gap={16}>
