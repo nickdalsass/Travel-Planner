@@ -56,11 +56,19 @@ export default function HelpModal() {
                     Click the dropdown menu on each trip to view the trip details
                   </li>
                   <li>
-                    To download, edit, or delete, simply click the corresponding icon
+                    To edit or delete, simply click the corresponding icon
                   </li>
                 </div>
               </div>
-              <li>Add more stuff here!!! @annie @bridget</li>
+              <div>
+                <div style={{ fontWeight: "bold" }}>Share a trip</div>
+                <div style={{ marginLeft: 20 }}>
+                  <li> Share Trips through PDF on Created Trips Page</li>
+                  <li>
+                    Select "Download PDF" to save the document to your device
+                  </li>
+                </div>
+              </div>
             </Stack>
           </Modal.Body>
         </Modal.Content>
