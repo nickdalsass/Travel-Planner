@@ -1,335 +1,105 @@
 "use client";
+"use client"
 
-import { Button, Paper, Container, Card, Text, Loader, Stack, Accordion, Center } from '@mantine/core';
+import { Container, Button, Title, Paper, Stack, TextInput } from '@mantine/core';
 import { supabase } from '@/lib/supabase/client';
-import { ReactElement, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
-import router, { useRouter } from 'next/navigation';
-import jsPDF from 'jspdf';
-import { Download } from 'lucide-react';
-import SearchAndFilterBar from './SearchAndFilterBar';
+import { useParams, useRouter } from "next/navigation";
 
-/* BRIDGET THIS IS YOUR TEMPLATE FOR VIEWING, I WOULD RECOMMEND PULLING FROM THE 
-DATABASE FOR EACH TRIP AND MAPPING IT ONTO SOME KIND OF CARD COMPONENT */
 
-type Transportation = {
-  id: number;
-  transp_type: string;
-  transp_company: string;
-  transp_departure: string;
-  transp_arrival: string;
-  confirmation_num: string;
-};
-type Accommodation = {
-  id: number;
-  accom_type: string;
-  accom_address: string;
-  accom_checkin: string;
-  accom_checkout: string;
-  confirmation_num: string;
-  accom_description: string;
-};
-type Itinerary = {
-  id: number;
-  itin_steps: string;
-};
+export default function EditTripsPage() {
+    const { id } = useParams();
+    const router = useRouter();
+    const [trip, setTrip] = useState({
+        trip_name: "",
+        trip_location: "",
+        trip_start: "",
+        trip_end: "",
+    });
 
-type Trip = {
-  id: number;
-  trip_name: string;
-  trip_location: string;
-  trip_start: string;
-  trip_end: string;
 
-  TRANSPORTATION?: Transportation[];
-  ACCOMMODATIONS?: Accommodation[];
-  ITINERARY?: Itinerary[];
-};
-export default function CreatedTripsPage() {
-  const [trips, setTrips] = useState<Trip[]>([]);
-  const [user, setUser] = useState<User | null>(null);
-  const [userLoading, setUserLoading] = useState(true);
-  const [tripsLoading, setTripsLoading] = useState(true);
-  const router = useRouter();
+    useEffect(() => {
+        const getTrip = async () => {
+            const { data, error } = await supabase
+                .from("TRIPS")
+                .select("*")
+                .eq("id", id)
+                .single();
+            if (error) {
+                console.error("Error fetching trip:", error);
+                return;
+            };
+            if (data) {
+                setTrip({
+                    trip_name: data.trip_name || "",
+                    trip_location: data.trip_location || "",
+                    trip_start: data.trip_start || "",
+                    trip_end: data.trip_end || "",
+                });
+            }
+        };
 
-  useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user);
-      setUserLoading(false);
+        if (id) {
+            getTrip();
+        }
+    }, [id]);
+
+    const updateTrip = async () => {
+        const { error } = await supabase
+            .from("TRIPS")
+            .update(trip)
+            .eq("id", id);
+
+        if (!error) {
+            router.push("/created-trips");
+        } else {
+            console.error(error);
+        }
     };
-    getUser();
-  }, []);
-
-  useEffect(() => {
-    if (!user) return;
-
-    const getTrips = async () => {
-      const { data, error } = await supabase
-        .from("TRIPS")
-        .select(
-          `
-    *,
-    TRANSPORTATION: "TRANSPORTATION" (
-      id,
-      transp_type,
-      transp_company,
-      transp_departure,
-      transp_arrival,
-      confirmation_num,
-      trip_id
-    ),
-     ACCOMMODATIONS: "ACCOMMODATIONS" (
-      id,
-      accom_type,
-      accom_address,
-      accom_checkin,
-      accom_checkout,
-      confirmation_num,
-      accom_description,
-      trip_id
-    ),
-
-    ITINERARY: "ITINERARY" (
-     id,
-     itin_steps,
-     trip_id
-    )
-
-  `
-        )
-        .eq("user_id", user.id);
-
-      if (error) {
-        console.error("Error fetching trips:", error);
-      } else {
-        setTrips(data);
-        setTripsLoading(false);
-      }
-    };
-
-    getTrips();
-  }, [user]);
-
-  if (tripsLoading) {
     return (
-      <Center mt={"xl"}>
-        <Loader size="xl" color="white" />;
-      </Center>
+        <Container size="lg" p={0} style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <Paper
+                withBorder
+                shadow="sm"
+                radius="md"
+                p="md"
+                mb="md"
+                style={{ flexShrink: 0 }}
+            >
+                <Title order={3} mb="lg">Edit Trip</Title>
+
+                <Stack>
+                    <TextInput
+                        label="Trip Name"
+                        value={trip.trip_name}
+                        onChange={(e) => setTrip({ ...trip, trip_name: e.target.value })}
+                    />
+
+                    <TextInput
+                        label="Location"
+                        value={trip.trip_location}
+                        onChange={(e) => setTrip({ ...trip, trip_location: e.target.value })}
+                    />
+
+                    <TextInput
+                        label="Start Date"
+                        type="date"
+                        value={trip.trip_start}
+                        onChange={(e) => setTrip({ ...trip, trip_start: e.target.value })}
+                    />
+
+                    <TextInput
+                        label="End Date"
+                        type="date"
+                        value={trip.trip_end}
+                        onChange={(e) => setTrip({ ...trip, trip_end: e.target.value })}
+                    />
+
+                    <Button onClick={updateTrip}>Save Changes</Button>
+                </Stack>
+            </Paper>
+        </Container>
     );
-  }
+};
 
-
-  //Generate PDF of trip 
-  const downloadTripPDF = (trip: Trip) => {
-    const doc = new jsPDF();
-    let y = 20;
-
-    doc.setFontSize(16);
-    doc.text("Trip Name: " + (trip.trip_name ?? "N/A"), 20, y);
-    y += 12;
-
-    doc.setFontSize(12);
-    doc.text("Destination: " + (trip.trip_location ?? "N/A"), 20, y);
-    y += 6;
-    doc.text("Start: " + (trip.trip_start ?? "N/A"), 20, y);
-    y += 6;
-    doc.text("End: " + (trip.trip_end ?? "N/A"), 20, y);
-    y += 14;
-
-
-    // Transportation
-    doc.text("Transportation", 20, y);
-    y += 8;
-
-    if (trip.TRANSPORTATION?.length) {
-      trip.TRANSPORTATION.forEach((t) => {
-        doc.text("Type: " + (t.transp_type ?? "N/A"), 20, y);
-        y += 6;
-        doc.text("Company: " + (t.transp_company ?? "N/A"), 20, y);
-        y += 6;
-        doc.text("Departure: " + (t.transp_departure ?? "N/A"), 20, y);
-        y += 6;
-        doc.text("Arrival: " + (t.transp_arrival ?? "N/A"), 20, y);
-        y += 6;
-        doc.text("Confirmation: " + (t.confirmation_num ?? "N/A"), 20, y);
-        y += 14;
-      });
-    } else {
-      doc.text("None", 20, y); y += 10;
-    }
-
-    // Accommodations
-    doc.text("Accommodations", 20, y);
-    y += 8;
-
-    if (trip.ACCOMMODATIONS?.length) {
-      trip.ACCOMMODATIONS.forEach((a) => {
-        doc.text("Type: " + (a.accom_type ?? "N/A"), 20, y);
-        y += 6;
-        doc.text("Address: " + (a.accom_address ?? "N/A"), 20, y);
-        y += 6;
-        doc.text("Check-in: " + (a.accom_checkin ?? "N/A"), 20, y);
-        y += 6;
-        doc.text("Check-out: " + (a.accom_checkout ?? "N/A"), 20, y);
-        y += 6;
-        doc.text("Confirmation: " + (a.confirmation_num ?? "N/A"), 20, y);
-        y += 14;
-      });
-    } else {
-      doc.text("None", 20, y); y += 10;
-    }
-
-    // Itinerary
-    doc.text("Itinerary", 20, y);
-    y += 8;
-
-    if (trip.ITINERARY && trip.ITINERARY[0]?.itin_steps?.length) {
-      trip.ITINERARY[0].itin_steps.forEach((step, i) => {
-        doc.text((i + 1) + ". " + step, 20, y);
-        y += 6;
-      });
-    } else {
-      doc.text("None", 20, y);
-    }
-
-    // Save the PDF
-    doc.save((trip.trip_name ?? "trip") + ".pdf");
-  };
-
-  return (
-    <Container
-      size="lg"
-      p={0}
-      style={{ flex: 1, display: "flex", flexDirection: "column" }}
-    >
-      <Paper
-        withBorder
-        shadow="sm"
-        radius="md"
-        p="md"
-        mb="md"
-        style={{ flexShrink: 0 }}
-
-      >
-        <Text className="tripPage">Created Trips</Text>
-        <SearchAndFilterBar user={user} />
-      </Paper>
-
-      <Stack gap={16}>
-        {trips.map((trip) => {
-          console.log("Fetched trip:", trip);
-          console.log("Transportation:", trip.TRANSPORTATION);
-
-          return (
-            <Card key={trip.id} withBorder p="lg">
-              <Button
-                color="#ccccff"
-                mb="sm"
-                leftSection={<Download />}
-                onClick={() => downloadTripPDF(trip)}
-              >
-                Download PDF
-              </Button>
-              <Accordion variant="separated" chevronPosition="right">
-                <Accordion.Item value="trip-details">
-                  <Accordion.Control>
-                    <Text fw={600} size="lg">
-                      {trip.trip_name}
-                    </Text>
-                  </Accordion.Control>
-
-                  <Accordion.Panel>
-                    <Text size="sm" c="dimmed">
-                      Destination: {trip.trip_location}
-                    </Text>
-                    <Text size="sm">Start: {trip.trip_start}</Text>
-                    <Text size="sm">End: {trip.trip_end}</Text>
-
-                    {/* Transportation Section */}
-                    <Text size="sm" fw={500} mt="md">
-                      Transportation
-                    </Text>
-                    {trip.TRANSPORTATION?.length > 0 ? (
-                      trip.TRANSPORTATION.map((t) => (
-                        <div key={t.id} style={{ marginBottom: "8px" }}>
-                          <Text size="sm">Type: {t.transp_type}</Text>
-                          <Text size="sm">Company: {t.transp_company}</Text>
-                          <Text size="sm">Departure: {t.transp_departure}</Text>
-                          <Text size="sm">Arrival: {t.transp_arrival}</Text>
-                          <Text size="sm">
-                            Confirmation Number: {t.confirmation_num}
-                          </Text>
-                          <Text size="sm">Departure: {t.transp_departure}</Text>
-                        </div>
-                      ))
-                    ) : (
-                      <Text size="sm">No transportation added yet.</Text>
-                    )}
-
-                    {/*Accomodations Section */}
-                    <Text size="sm" fw={500} mt="md">
-                      Accommodations
-                    </Text>
-
-                    {trip.ACCOMMODATIONS?.length > 0 ? (
-                      trip.ACCOMMODATIONS.map((a) => (
-                        <div key={a.id} style={{ marginBottom: "8px" }}>
-                          <Text size="sm">Type: {a.accom_type}</Text>
-                          <Text size="sm">Address: {a.accom_address}</Text>
-                          <Text size="sm">Check-in: {a.accom_checkin}</Text>
-                          <Text size="sm">Check-out: {a.accom_checkout}</Text>
-                          {a.confirmation_num && (
-                            <Text size="sm">
-                              Confirmation #: {a.confirmation_num}
-                            </Text>
-                          )}
-                          {a.accom_description && (
-                            <Text size="sm">Notes: {a.accom_description}</Text>
-                          )}
-                        </div>
-                      ))
-                    ) : (
-                      <Text size="sm">No accommodations added yet.</Text>
-                    )}
-
-                    {/*Itinerary Section */}
-                    {/* Itinerary Section */}
-                    <Text size="sm" fw={500} mt="md">
-                      Itinerary
-                    </Text>
-
-                    {trip.ITINERARY &&
-                      trip.ITINERARY.length > 0 &&
-                      trip.ITINERARY[0].itin_steps?.length > 0 ? (
-                      <ul style={{ paddingLeft: "20px", marginTop: "8px" }}>
-                        {trip.ITINERARY[0].itin_steps.map((step: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined, index: Key | null | undefined) => (
-                          <li key={index}>
-                            <Text size="sm">{step}</Text>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <Text size="sm">No itinerary added yet.</Text>
-                    )}
-                    
-                    <Button
-                      mt="md"
-                      variant="light"
-                      onClick={() => router.push(`/editTripsPage?id=${trip.id}`)}
-                    >
-                      Edit Trip
-                    </Button>
-
-                  </Accordion.Panel>
-                </Accordion.Item>
-              </Accordion>
-            </Card>
-          );
-        })}
-      </Stack>
-    </Container>
-  );
-}
