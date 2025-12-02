@@ -1,5 +1,5 @@
 "use client";
-"use client"
+
 
 import { Container, Button, Title, Paper, Stack, TextInput } from '@mantine/core';
 import { supabase } from '@/lib/supabase/client';
@@ -8,54 +8,64 @@ import { useParams, useRouter } from "next/navigation";
 
 
 export default function EditTripsPage() {
-    const { id } = useParams();
-    const router = useRouter();
-    const [trip, setTrip] = useState({
-        trip_name: "",
-        trip_location: "",
-        trip_start: "",
-        trip_end: "",
-    });
+  const { id } = useParams();
+  const router = useRouter();
 
+  const [trip, setTrip] = useState({
+    trip_name: "",
+    trip_location: "",
+    trip_start: "",
+    trip_end: "",
+  });
 
-    useEffect(() => {
-        const getTrip = async () => {
-            const { data, error } = await supabase
-                .from("TRIPS")
-                .select("*")
-                .eq("id", id)
-                .single();
-            if (error) {
-                console.error("Error fetching trip:", error);
-                return;
-            };
-            if (data) {
-                setTrip({
-                    trip_name: data.trip_name || "",
-                    trip_location: data.trip_location || "",
-                    trip_start: data.trip_start || "",
-                    trip_end: data.trip_end || "",
-                });
-            }
-        };
+  // Load trip details
+  useEffect(() => {
+    const getTrip = async () => {
+      const { data, error } = await supabase
+        .from("TRIPS")
+        .select("*")
+        .eq("id", Number(id))   // <-- FIXED
+        .single();
 
-        if (id) {
-            getTrip();
-        }
-    }, [id]);
+      if (error) {
+        console.error("Error fetching trip:", error);
+        return;
+      }
 
-    const updateTrip = async () => {
-        const { error } = await supabase
-            .from("TRIPS")
-            .update(trip)
-            .eq("id", id);
-
-        if (!error) {
-            router.push("/created-trips");
-        } else {
-            console.error(error);
-        }
+      if (data) {
+        setTrip({
+          trip_name: data.trip_name || "",
+          trip_location: data.trip_location || "",
+          trip_start: data.trip_start || "",
+          trip_end: data.trip_end || "",
+        });
+      }
     };
+
+    if (id) getTrip();
+  }, [id]);
+
+
+
+  // Update trip
+  const updateTrip = async () => {
+    const { error } = await supabase
+      .from("TRIPS")
+      .update({
+        trip_name: trip.trip_name,
+        trip_location: trip.trip_location,
+        trip_start: trip.trip_start,
+        trip_end: trip.trip_end,
+      })
+      .eq("id", Number(id));   // <-- FIXED
+
+    if (error) {
+      console.error("Update error:", error);
+      return;
+    }
+
+    router.push("/created-trips");
+  };
     return (
         <Container size="lg" p={0} style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <Paper
