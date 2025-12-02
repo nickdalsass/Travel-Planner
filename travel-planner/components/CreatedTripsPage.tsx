@@ -1,13 +1,24 @@
 "use client";
 
-import { Button, Paper, Container, Card, Text, Loader, Stack, Accordion, Center } from '@mantine/core';
-import { supabase } from '@/lib/supabase/client';
-import { ReactElement, useEffect, useState } from 'react';
-import { User } from '@supabase/supabase-js';
-import router, { useRouter } from 'next/navigation';
-import jsPDF from 'jspdf';
-import { Download } from 'lucide-react';
-import SearchAndFilterBar from './SearchAndFilterBar';
+import {
+  Button,
+  Paper,
+  Container,
+  Card,
+  Text,
+  Loader,
+  Stack,
+  Accordion,
+  Group,
+  Center,
+} from "@mantine/core";
+import { supabase } from "@/lib/supabase/client";
+import { useEffect, useState } from "react";
+import { User } from "@supabase/supabase-js";
+import jsPDF from "jspdf";
+import { Download, PencilLine } from "lucide-react";
+import { useRouter } from "next/navigation";
+import SearchAndFilterBar from "./SearchAndFilterBar";
 
 /* BRIDGET THIS IS YOUR TEMPLATE FOR VIEWING, I WOULD RECOMMEND PULLING FROM THE 
 DATABASE FOR EACH TRIP AND MAPPING IT ONTO SOME KIND OF CARD COMPONENT */
@@ -52,7 +63,7 @@ export default function CreatedTripsPage() {
   const [nameFilter, setNameFilter] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
   const router = useRouter();
-
+  
   useEffect(() => {
     const getUser = async () => {
       const {
@@ -230,111 +241,133 @@ export default function CreatedTripsPage() {
               (trip.trip_name ?? "").toLowerCase().includes(nameFilter.toLowerCase()) &&
               (trip.trip_location ?? "").toLowerCase().includes(locationFilter.toLowerCase())
           );
-          
+
           if (filteredTrips.length === 0) {
             return <Text key="no-results" ta="center" size="lg" mt="lg">No Trip Results</Text>;
           }
-          
+
           return filteredTrips.map((trip) => {
             console.log("Fetched trip:", trip);
             console.log("Transportation:", trip.TRANSPORTATION);
 
-          return (
-            <Card key={trip.id} withBorder p="lg">
-              <Button
-                color="#ccccff"
-                mb="sm"
-                leftSection={<Download />}
-                onClick={() => downloadTripPDF(trip)}
+            return (
+              <Card 
+                key={trip.id} 
+                withBorder 
+                p="lg"
+                radius="lg"
               >
-                Download PDF
-              </Button>
-              <Accordion variant="separated" chevronPosition="right">
-                <Accordion.Item value="trip-details">
-                  <Accordion.Control>
-                    <Text fw={600} size="lg">
-                      {trip.trip_name}
-                    </Text>
-                  </Accordion.Control>
+                <Accordion variant="filled" chevronPosition="right">
+                  <Accordion.Item value="trip-details">
+                    <Accordion.Control>
+                      <Text fw={600} size="lg">
+                        {trip.trip_name}
+                      </Text>
+                    </Accordion.Control>
 
-                  <Accordion.Panel>
-                    <Text size="sm" c="dimmed">
-                      Destination: {trip.trip_location}
-                    </Text>
-                    <Text size="sm">Start: {trip.trip_start}</Text>
-                    <Text size="sm">End: {trip.trip_end}</Text>
+                    <Accordion.Panel>
+                      <Text size="sm" c="dimmed">
+                        Destination: {trip.trip_location}
+                      </Text>
+                      <Text size="sm">Start: {trip.trip_start}</Text>
+                      <Text size="sm">End: {trip.trip_end}</Text>
 
-                    {/* Transportation Section */}
-                    <Text size="sm" fw={500} mt="md">
-                      Transportation
-                    </Text>
-                    {trip.TRANSPORTATION?.length > 0 ? (
-                      trip.TRANSPORTATION.map((t) => (
-                        <div key={t.id} style={{ marginBottom: "8px" }}>
-                          <Text size="sm">Type: {t.transp_type}</Text>
-                          <Text size="sm">Company: {t.transp_company}</Text>
-                          <Text size="sm">Departure: {t.transp_departure}</Text>
-                          <Text size="sm">Arrival: {t.transp_arrival}</Text>
-                          <Text size="sm">
-                            Confirmation Number: {t.confirmation_num}
-                          </Text>
-                        </div>
-                      ))
-                    ) : (
-                      <Text size="sm">No transportation added yet.</Text>
-                    )}
-
-                    {/*Accomodations Section */}
-                    <Text size="sm" fw={500} mt="md">
-                      Accommodations
-                    </Text>
-
-                    {trip.ACCOMMODATIONS?.length > 0 ? (
-                      trip.ACCOMMODATIONS.map((a) => (
-                        <div key={a.id} style={{ marginBottom: "8px" }}>
-                          <Text size="sm">Type: {a.accom_type}</Text>
-                          <Text size="sm">Address: {a.accom_address}</Text>
-                          <Text size="sm">Check-in: {a.accom_checkin}</Text>
-                          <Text size="sm">Check-out: {a.accom_checkout}</Text>
-                          {a.confirmation_num && (
+                      {/* Transportation Section */}
+                      <Text size="sm" fw={500} mt="md">
+                        Transportation
+                      </Text>
+                      {trip.TRANSPORTATION?.length > 0 ? (
+                        trip.TRANSPORTATION.map((t) => (
+                          <div key={t.id} style={{ marginBottom: "8px" }}>
+                            <Text size="sm">Type: {t.transp_type}</Text>
+                            <Text size="sm">Company: {t.transp_company}</Text>
+                            <Text size="sm">Departure: {t.transp_departure}</Text>
+                            <Text size="sm">Arrival: {t.transp_arrival}</Text>
                             <Text size="sm">
-                              Confirmation #: {a.confirmation_num}
+                              Confirmation Number: {t.confirmation_num}
                             </Text>
-                          )}
-                          {a.accom_description && (
-                            <Text size="sm">Notes: {a.accom_description}</Text>
-                          )}
-                        </div>
-                      ))
-                    ) : (
-                      <Text size="sm">No accommodations added yet.</Text>
-                    )}
+                          </div>
+                        ))
+                      ) : (
+                        <Text size="sm">No transportation added yet.</Text>
+                      )}
 
-                    {/* Itinerary Section */}
-                    <Text size="sm" fw={500} mt="md">
-                      Itinerary
-                    </Text>
+                      {/*Accomodations Section */}
+                      <Text size="sm" fw={500} mt="md">
+                        Accommodations
+                      </Text>
 
-                    {trip.ITINERARY &&
-                    trip.ITINERARY.length > 0 &&
-                    trip.ITINERARY[0].itin_steps?.length > 0 ? (
-                      <ul style={{ paddingLeft: "20px", marginTop: "8px" }}>
-                        {trip.ITINERARY[0].itin_steps.map((step: string, index: number) => (
-                          <li key={index}>
-                            <Text size="sm">{step}</Text>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <Text size="sm">No itinerary added yet.</Text>
-                    )}
-                  </Accordion.Panel>
-                  
-                </Accordion.Item>
-              </Accordion>
-            </Card>
-          );
-        })}
+                      {trip.ACCOMMODATIONS?.length > 0 ? (
+                        trip.ACCOMMODATIONS.map((a) => (
+                          <div key={a.id} style={{ marginBottom: "8px" }}>
+                            <Text size="sm">Type: {a.accom_type}</Text>
+                            <Text size="sm">Address: {a.accom_address}</Text>
+                            <Text size="sm">Check-in: {a.accom_checkin}</Text>
+                            <Text size="sm">Check-out: {a.accom_checkout}</Text>
+                            {a.confirmation_num && (
+                              <Text size="sm">
+                                Confirmation #: {a.confirmation_num}
+                              </Text>
+                            )}
+                            {a.accom_description && (
+                              <Text size="sm">Notes: {a.accom_description}</Text>
+                            )}
+                          </div>
+                        ))
+                      ) : (
+                        <Text size="sm">No accommodations added yet.</Text>
+                      )}
+
+                      {/* Itinerary Section */}
+                      <Text size="sm" fw={500} mt="md">
+                        Itinerary
+                      </Text>
+
+                      {trip.ITINERARY &&
+                        trip.ITINERARY.length > 0 &&
+                        trip.ITINERARY[0].itin_steps?.length > 0 ? (
+                        <ul style={{ paddingLeft: "20px", marginTop: "8px" }}>
+                          {trip.ITINERARY[0].itin_steps.map((step: string, index: number) => (
+                            <li key={index}>
+                              <Text size="sm">{step}</Text>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <Text size="sm">No itinerary added yet.</Text>
+                      )}
+                    </Accordion.Panel>
+                  </Accordion.Item>
+                </Accordion>
+                <Group justify="center" gap={20} mt={"md"}>
+                  <Button
+                    w={200}
+                    color="#b8626cff"
+                    mb="sm"
+                    leftSection={<Download />}
+                    onClick={() => downloadTripPDF(trip)}
+                  >
+                    Download PDF
+                  </Button>
+                  <Button
+                    w={200}
+                    color="#b8626cff"
+                    mb="sm"
+                    leftSection={<PencilLine />}
+                    onClick={() => {
+                      const params = new URLSearchParams();
+                      params.set("edit", "true");
+                      params.set("id", trip.id.toString());
+                      router.push(`/trip?${params.toString()}`);
+                    }}
+                  >
+                    Edit Trip
+                  </Button>
+                </Group>
+              </Card>
+            );
+          });
+        })()}
       </Stack>
     </Container>
   );
