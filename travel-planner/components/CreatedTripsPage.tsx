@@ -1,13 +1,21 @@
-"use client"
+"use client";
 
-import { Paper, Container, Card, Text, Group, Stack, Accordion } from '@mantine/core';
-import { supabase } from '@/lib/supabase/client';
-import { useEffect, useState } from 'react';
-import { User } from '@supabase/supabase-js';
+import {
+  Paper,
+  Container,
+  Card,
+  Text,
+  Stack,
+  Accordion,
+  Loader,
+  Center,
+} from "@mantine/core";
+import { supabase } from "@/lib/supabase/client";
+import { useEffect, useState } from "react";
+import { User } from "@supabase/supabase-js";
 
 /* BRIDGET THIS IS YOUR TEMPLATE FOR VIEWING, I WOULD RECOMMEND PULLING FROM THE 
 DATABASE FOR EACH TRIP AND MAPPING IT ONTO SOME KIND OF CARD COMPONENT */
-
 
 type Transportation = {
   id: number;
@@ -45,14 +53,16 @@ type Trip = {
 export default function CreatedTripsPage() {
   const [trips, setTrips] = useState<Trip[]>([]);
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [userLoading, setUserLoading] = useState(true);
+  const [tripsLoading, setTripsLoading] = useState(true);
+
   useEffect(() => {
     const getUser = async () => {
       const {
         data: { user },
       } = await supabase.auth.getUser();
       setUser(user);
-      setLoading(false);
+      setUserLoading(false);
     };
     getUser();
   }, []);
@@ -63,7 +73,8 @@ export default function CreatedTripsPage() {
     const getTrips = async () => {
       const { data, error } = await supabase
         .from("TRIPS")
-        .select(`
+        .select(
+          `
     *,
     TRANSPORTATION: "TRANSPORTATION" (
       id,
@@ -91,38 +102,36 @@ export default function CreatedTripsPage() {
      trip_id
     )
 
-  `)
+  `
+        )
         .eq("user_id", user.id);
-
 
       if (error) {
         console.error("Error fetching trips:", error);
       } else {
         setTrips(data);
+        setTripsLoading(false);
       }
     };
 
     getTrips();
   }, [user]);
-  //validation of user
 
-  useEffect(() => {
-    console.log("User:", user?.id);
-    console.log("Trips:", trips);
-  }, [user, trips]);
-  const getTrips = async () => {
-    if (user) {
-      const { data, error } = await supabase
-        .from("TRIPS")
-        .select('*')
-        .eq('user_id', user.id)
+  if (tripsLoading) {
+    return (
+      <Center mt={"xl"}>
+        <Loader size="xl" color="white"/>;
+      </Center>
+    ); 
 
-      return data;
-    }
   }
 
   return (
-    <Container size="lg" p={0} style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+    <Container
+      size="lg"
+      p={0}
+      style={{ flex: 1, display: "flex", flexDirection: "column" }}
+    >
       <Paper
         withBorder
         shadow="sm"
@@ -130,9 +139,8 @@ export default function CreatedTripsPage() {
         p="md"
         mb="md"
         style={{ flexShrink: 0 }}
-        
       >
-        <Text className="tripPage" >Created Trips</Text>
+        <Text className="tripPage">Created Trips</Text>
       </Paper>
 
       <Stack gap={16}>
@@ -151,12 +159,16 @@ export default function CreatedTripsPage() {
                   </Accordion.Control>
 
                   <Accordion.Panel>
-                    <Text size="sm" c="dimmed">Destination: {trip.trip_location}</Text>
+                    <Text size="sm" c="dimmed">
+                      Destination: {trip.trip_location}
+                    </Text>
                     <Text size="sm">Start: {trip.trip_start}</Text>
                     <Text size="sm">End: {trip.trip_end}</Text>
 
                     {/* Transportation Section */}
-                    <Text size="sm" fw={500} mt="md">Transportation</Text>
+                    <Text size="sm" fw={500} mt="md">
+                      Transportation
+                    </Text>
                     {trip.TRANSPORTATION?.length > 0 ? (
                       trip.TRANSPORTATION.map((t) => (
                         <div key={t.id} style={{ marginBottom: "8px" }}>
@@ -164,7 +176,9 @@ export default function CreatedTripsPage() {
                           <Text size="sm">Company: {t.transp_company}</Text>
                           <Text size="sm">Departure: {t.transp_departure}</Text>
                           <Text size="sm">Arrival: {t.transp_arrival}</Text>
-                          <Text size="sm">Confirmation Number: {t.confirmation_num}</Text>
+                          <Text size="sm">
+                            Confirmation Number: {t.confirmation_num}
+                          </Text>
                           <Text size="sm">Departure: {t.transp_departure}</Text>
                         </div>
                       ))
@@ -173,7 +187,9 @@ export default function CreatedTripsPage() {
                     )}
 
                     {/*Accomodations Section */}
-                    <Text size="sm" fw={500} mt="md">Accommodations</Text>
+                    <Text size="sm" fw={500} mt="md">
+                      Accommodations
+                    </Text>
 
                     {trip.ACCOMMODATIONS?.length > 0 ? (
                       trip.ACCOMMODATIONS.map((a) => (
@@ -183,7 +199,9 @@ export default function CreatedTripsPage() {
                           <Text size="sm">Check-in: {a.accom_checkin}</Text>
                           <Text size="sm">Check-out: {a.accom_checkout}</Text>
                           {a.confirmation_num && (
-                            <Text size="sm">Confirmation #: {a.confirmation_num}</Text>
+                            <Text size="sm">
+                              Confirmation #: {a.confirmation_num}
+                            </Text>
                           )}
                           {a.accom_description && (
                             <Text size="sm">Notes: {a.accom_description}</Text>
@@ -196,9 +214,13 @@ export default function CreatedTripsPage() {
 
                     {/*Itinerary Section */}
                     {/* Itinerary Section */}
-                    <Text size="sm" fw={500} mt="md">Itinerary</Text>
+                    <Text size="sm" fw={500} mt="md">
+                      Itinerary
+                    </Text>
 
-                    {trip.ITINERARY && trip.ITINERARY.length > 0 && trip.ITINERARY[0].itin_steps?.length > 0 ? (
+                    {trip.ITINERARY &&
+                    trip.ITINERARY.length > 0 &&
+                    trip.ITINERARY[0].itin_steps?.length > 0 ? (
                       <ul style={{ paddingLeft: "20px", marginTop: "8px" }}>
                         {trip.ITINERARY[0].itin_steps.map((step, index) => (
                           <li key={index}>
@@ -209,12 +231,11 @@ export default function CreatedTripsPage() {
                     ) : (
                       <Text size="sm">No itinerary added yet.</Text>
                     )}
-
                   </Accordion.Panel>
                 </Accordion.Item>
               </Accordion>
             </Card>
-          )
+          );
         })}
       </Stack>
     </Container>
