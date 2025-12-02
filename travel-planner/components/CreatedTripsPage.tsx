@@ -231,8 +231,8 @@ export default function CreatedTripsPage() {
           return (
             <Card key={trip.id} withBorder p="lg">
               <Button
-                color="#eacebeff"
-                mb="xs"
+                color="#ccccff"
+                mb="sm"
                 onClick={() => downloadTripPDF(trip)}
                 >
                   Download PDF
