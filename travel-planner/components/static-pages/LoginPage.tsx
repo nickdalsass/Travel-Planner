@@ -75,7 +75,7 @@ const LoginPage = () => {
                       },
                     }}
                     autoComplete="off"
-                    placeholder="foodlover@gmail.com"
+                    placeholder="worldtraveler@gmail.com"
                     {...form.getInputProps("email")}
                   />
 
