@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import {
   Button,
   Stepper,
@@ -31,11 +30,6 @@ const CreateTripStepper = () => {
   const [active, setActive] = useState(0);
 
   const formattedDate = formatTodaysDate();
-
-  // we know were in editmode by looking at the url params
-  const searchParams = useSearchParams();
-  const isEditMode = searchParams.get("edit") === "true";
-  const tripId = searchParams.get("id");
 
   const form = useForm<TripFormValues>({
     initialValues: {
@@ -214,105 +208,6 @@ const CreateTripStepper = () => {
     }
   };
 
-  // when editing, fetch the full trip and related rows and hydrate the form
-  useEffect(() => {
-    const loadTripForEdit = async () => {
-      if (!isEditMode || !tripId) return;
-
-      try {
-        const { data, error } = await supabase
-          .from("TRIPS")
-          .select(
-            `
-        *,
-        TRANSPORTATION: "TRANSPORTATION" (
-          id,
-          transp_type,
-          transp_company,
-          transp_departure,
-          transp_arrival,
-          confirmation_num,
-          trip_id
-        ),
-        ACCOMMODATIONS: "ACCOMMODATIONS" (
-          id,
-          accom_type,
-          accom_address,
-          accom_checkin,
-          accom_checkout,
-          confirmation_num,
-          accom_description,
-          trip_id
-        ),
-        ITINERARY: "ITINERARY" (
-          id,
-          itin_steps,
-          trip_id
-        )
-      `
-          )
-          .eq("id", Number(tripId))
-          .single();
-
-        if (error) {
-          throw error;
-        }
-
-        if (!data) return;
-
-        form.setValues({
-          userId: "",
-          tripName: data.trip_name || "",
-          location: data.trip_location || "",
-          tripLeaveDate: data.trip_start || formattedDate,
-          tripReturnDate: data.trip_end || null,
-          transportationItems:
-            data.TRANSPORTATION?.map((t: any) => ({
-              transpType: t.transp_type || "",
-              transpCompany: t.transp_company || "",
-              transpDepartureDate: t.transp_departure || formattedDate,
-              transpArrivalDate: t.transp_arrival || null,
-              transpConfNum: t.confirmation_num || "",
-            })) || [
-              {
-                transpType: "",
-                transpCompany: "",
-                transpDepartureDate: formattedDate,
-                transpArrivalDate: null,
-                transpConfNum: "",
-              },
-            ],
-          accommodationItems:
-            data.ACCOMMODATIONS?.map((a: any) => ({
-              accomType: a.accom_type || "",
-              accomDescription: a.accom_description || "",
-              accomAddress: a.accom_address || "",
-              accomCheckinDate: a.accom_checkin || formattedDate,
-              accomCheckOutDate: a.accom_checkout || null,
-              accomConfNum: a.confirmation_num || "",
-            })) || [
-              {
-                accomType: "",
-                accomDescription: "",
-                accomAddress: "",
-                accomCheckinDate: formattedDate,
-                accomCheckOutDate: null,
-                accomConfNum: "",
-              },
-            ],
-          itinSteps:
-            (data.ITINERARY &&
-              data.ITINERARY[0] &&
-              (data.ITINERARY[0].itin_steps || [])) || [],
-        });
-      } catch (e) {
-        alert(`Error loading trip for edit!`);
-      }
-    };
-
-    loadTripForEdit();
-  }, [isEditMode, tripId]);
-
   const handleSubmit = async (values: TripFormValues) => {
     try {
       const {
@@ -321,163 +216,69 @@ const CreateTripStepper = () => {
       } = await supabase.auth.getUser();
 
       if (userError) throw Error("User auth error!!");
-      // if in edit mode and have a trip id, update existing trip and related tables.
-      if (isEditMode && tripId) {
-        const numericTripId = Number(tripId);
 
-        const { error: tripUpdateError } = await supabase
-          .from("TRIPS")
-          .update({
-            trip_name: values.tripName,
-            trip_location: values.location,
-            trip_start: values.tripLeaveDate,
-            trip_end: values.tripReturnDate,
-          })
-          .eq("id", numericTripId)
-          .eq("user_id", user?.id || "");
+      const { data: tripData, error: tripError } = await supabase
+        .from("TRIPS")
+        .insert({
+          user_id: user?.id,
+          trip_name: values.tripName,
+          trip_location: values.location,
+          trip_start: values.tripLeaveDate,
+          trip_end: values.tripReturnDate,
+        })
+        .select()
+        .single();
 
-        if (tripUpdateError) {
-          throw tripUpdateError;
-        }
+      if (tripError) {
+        throw tripError;
+      }
 
-        // rewrite rows for this trip based on new form values
-        const { error: deleteTranspError } = await supabase
-          .from("TRANSPORTATION")
-          .delete()
-          .eq("trip_id", numericTripId);
+      const { error: transpError } = await supabase
+        .from("TRANSPORTATION")
+        .insert(
+          values.transportationItems.map((item) => ({
+            trip_id: tripData.id,
+            transp_type: item.transpType,
+            transp_company: item.transpCompany,
+            transp_departure: item.transpDepartureDate,
+            transp_arrival: item.transpArrivalDate,
+            confirmation_num: item.transpConfNum,
+          }))
+        );
 
-        if (deleteTranspError) throw deleteTranspError;
+      if (transpError) throw transpError;
 
-        if (values.transportationItems && values.transportationItems.length > 0) {
-          const { error: insertTranspError } = await supabase
-            .from("TRANSPORTATION")
-            .insert(
-              values.transportationItems.map((item) => ({
-                trip_id: numericTripId,
-                transp_type: item.transpType,
-                transp_company: item.transpCompany,
-                transp_departure: item.transpDepartureDate,
-                transp_arrival: item.transpArrivalDate,
-                confirmation_num: item.transpConfNum,
-              }))
-            );
-
-          if (insertTranspError) throw insertTranspError;
-        }
-
-        // Rewrite accommodation rows for this trip based on current form values
-        const { error: deleteAccomError } = await supabase
+      if (values.accommodationItems && values.accommodationItems.length > 0) {
+        const { error: accomInsertError } = await supabase
           .from("ACCOMMODATIONS")
-          .delete()
-          .eq("trip_id", numericTripId);
-
-        if (deleteAccomError) throw deleteAccomError;
-
-        if (values.accommodationItems && values.accommodationItems.length > 0) {
-          const { error: insertAccomError } = await supabase
-            .from("ACCOMMODATIONS")
-            .insert(
-              values.accommodationItems.map((item) => ({
-                trip_id: numericTripId,
-                accom_type: item.accomType,
-                accom_description: item.accomDescription,
-                accom_address: item.accomAddress,
-                accom_checkin: item.accomCheckinDate,
-                accom_checkout: item.accomCheckOutDate,
-                confirmation_num: item.accomConfNum,
-              }))
-            );
-
-          if (insertAccomError) throw insertAccomError;
-        }
-
-        // rewrite itinerary rows for trip based on current vals
-       const { error: deleteItinError } = await supabase
-          .from("ITINERARY")
-          .delete()
-          .eq("trip_id", numericTripId);
-
-        if (deleteItinError) throw deleteItinError;
-
-        if (values.itinSteps && values.itinSteps.length > 0) {
-          const { error: insertItinError } = await supabase
-            .from("ITINERARY")
-            .insert([
-              {
-                trip_id: numericTripId,
-                itin_steps: values.itinSteps,
-              },
-            ]);
-
-          if (insertItinError) throw insertItinError;
-        }
-
-        window.location.href = window.origin;
-      } else {
-        // original submission behavior to insert into tables
-        const { data: tripData, error: tripError } = await supabase
-          .from("TRIPS")
-          .insert({
-            user_id: user?.id,
-            trip_name: values.tripName,
-            trip_location: values.location,
-            trip_start: values.tripLeaveDate,
-            trip_end: values.tripReturnDate,
-          })
-          .select()
-          .single();
-
-        if (tripError) {
-          throw tripError;
-        }
-
-        const { error: transpError } = await supabase
-          .from("TRANSPORTATION")
           .insert(
-            values.transportationItems.map((item) => ({
+            values.accommodationItems.map((item) => ({
               trip_id: tripData.id,
-              transp_type: item.transpType,
-              transp_company: item.transpCompany,
-              transp_departure: item.transpDepartureDate,
-              transp_arrival: item.transpArrivalDate,
-              confirmation_num: item.transpConfNum,
+              accom_type: item.accomType,
+              accom_description: item.accomDescription,
+              accom_address: item.accomAddress,
+              accom_checkin: item.accomCheckinDate,
+              accom_checkout: item.accomCheckOutDate,
+              confirmation_num: item.accomConfNum,
             }))
           );
 
-        if (transpError) throw transpError;
-
-        if (values.accommodationItems && values.accommodationItems.length > 0) {
-          const { error: accomInsertError } = await supabase
-            .from("ACCOMMODATIONS")
-            .insert(
-              values.accommodationItems.map((item) => ({
-                trip_id: tripData.id,
-                accom_type: item.accomType,
-                accom_description: item.accomDescription,
-                accom_address: item.accomAddress,
-                accom_checkin: item.accomCheckinDate,
-                accom_checkout: item.accomCheckOutDate,
-                confirmation_num: item.accomConfNum,
-              }))
-            );
-
-          if (accomInsertError) throw accomInsertError;
-        }
-
-        const { error: itinInsertError } = await supabase
-          .from("ITINERARY")
-          .insert([
-            {
-              trip_id: tripData.id,
-              itin_steps: values.itinSteps,
-            },
-          ]);
-
-        if (itinInsertError) throw itinInsertError;
-
-        // if everything works (hopefully), we return to homepage
-        window.location.href = window.origin;
+        if (accomInsertError) throw accomInsertError;
       }
+
+      const { error: itinInsertError } = await supabase
+        .from("ITINERARY")
+        .insert([
+          {
+            trip_id: tripData.id,
+            itin_steps: values.itinSteps,
+          },
+        ]);
+
+      if (itinInsertError) throw itinInsertError;
+
+      // if everything works (hopefully), we return to homepage
+      window.location.href = window.origin;
     } catch (error) {
       alert(
         `Error: ${
@@ -863,13 +664,7 @@ const CreateTripStepper = () => {
               color="#3f8343ff"
               onClick={() => handleSubmit(form.values)}
             >
-              {form.submitting
-                ? isEditMode
-                  ? "Updating Trip..."
-                  : "Creating Trip..."
-                : isEditMode
-                ? "Update Trip"
-                : "Create Trip"}
+              {form.submitting ? "Creating Trip..." : "Create Trip"}
             </Button>
           )
         )}
