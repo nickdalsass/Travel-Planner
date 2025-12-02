@@ -1,9 +1,10 @@
 "use client";
 
-import { Paper, Container, Card, Text, Group, Stack, Accordion } from '@mantine/core';
+import { Button, Paper, Container, Card, Text, Group, Stack, Accordion } from '@mantine/core';
 import { supabase } from '@/lib/supabase/client';
 import { useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
+import router from 'next/router';
 
 /* BRIDGET THIS IS YOUR TEMPLATE FOR VIEWING, I WOULD RECOMMEND PULLING FROM THE 
 DATABASE FOR EACH TRIP AND MAPPING IT ONTO SOME KIND OF CARD COMPONENT */
@@ -111,9 +112,9 @@ export default function CreatedTripsPage() {
   if (tripsLoading) {
     return (
       <Center mt={"xl"}>
-        <Loader size="xl" color="white"/>;
+        <Loader size="xl" color="white" />;
       </Center>
-    ); 
+    );
 
   }
 
@@ -124,15 +125,15 @@ export default function CreatedTripsPage() {
     let y = 20;
 
     doc.setFontSize(16);
-    doc.text("Trip Name: " + (trip.trip_name ?? "N/A"), 20, y); 
+    doc.text("Trip Name: " + (trip.trip_name ?? "N/A"), 20, y);
     y += 12;
 
     doc.setFontSize(12);
-    doc.text("Destination: " + (trip.trip_location ?? "N/A"), 20, y); 
+    doc.text("Destination: " + (trip.trip_location ?? "N/A"), 20, y);
     y += 6;
-    doc.text("Start: " + (trip.trip_start ?? "N/A"), 20, y); 
+    doc.text("Start: " + (trip.trip_start ?? "N/A"), 20, y);
     y += 6;
-    doc.text("End: " + (trip.trip_end ?? "N/A"), 20, y); 
+    doc.text("End: " + (trip.trip_end ?? "N/A"), 20, y);
     y += 14;
 
 
@@ -142,16 +143,16 @@ export default function CreatedTripsPage() {
 
     if (trip.TRANSPORTATION?.length) {
       trip.TRANSPORTATION.forEach((t) => {
-        doc.text("Type: " + (t.transp_type ?? "N/A"), 20, y); 
+        doc.text("Type: " + (t.transp_type ?? "N/A"), 20, y);
         y += 6;
-        doc.text("Company: " + (t.transp_company ?? "N/A"), 20, y); 
+        doc.text("Company: " + (t.transp_company ?? "N/A"), 20, y);
         y += 6;
-        doc.text("Departure: " + (t.transp_departure ?? "N/A"), 20, y); 
+        doc.text("Departure: " + (t.transp_departure ?? "N/A"), 20, y);
         y += 6;
-        doc.text("Arrival: " + (t.transp_arrival ?? "N/A"), 20, y); 
+        doc.text("Arrival: " + (t.transp_arrival ?? "N/A"), 20, y);
         y += 6;
-        doc.text("Confirmation: " + (t.confirmation_num ?? "N/A"), 20, y); 
-       y += 14;
+        doc.text("Confirmation: " + (t.confirmation_num ?? "N/A"), 20, y);
+        y += 14;
       });
     } else {
       doc.text("None", 20, y); y += 10;
@@ -163,15 +164,15 @@ export default function CreatedTripsPage() {
 
     if (trip.ACCOMMODATIONS?.length) {
       trip.ACCOMMODATIONS.forEach((a) => {
-        doc.text("Type: " + (a.accom_type ?? "N/A"), 20, y); 
+        doc.text("Type: " + (a.accom_type ?? "N/A"), 20, y);
         y += 6;
-        doc.text("Address: " + (a.accom_address ?? "N/A"), 20, y); 
+        doc.text("Address: " + (a.accom_address ?? "N/A"), 20, y);
         y += 6;
-        doc.text("Check-in: " + (a.accom_checkin ?? "N/A"), 20, y); 
+        doc.text("Check-in: " + (a.accom_checkin ?? "N/A"), 20, y);
         y += 6;
-        doc.text("Check-out: " + (a.accom_checkout ?? "N/A"), 20, y); 
+        doc.text("Check-out: " + (a.accom_checkout ?? "N/A"), 20, y);
         y += 6;
-        doc.text("Confirmation: " + (a.confirmation_num ?? "N/A"), 20, y); 
+        doc.text("Confirmation: " + (a.confirmation_num ?? "N/A"), 20, y);
         y += 14;
       });
     } else {
@@ -208,7 +209,7 @@ export default function CreatedTripsPage() {
         p="md"
         mb="md"
         style={{ flexShrink: 0 }}
-        
+
       >
         <Text className="tripPage">Created Trips</Text>
       </Paper>
@@ -224,9 +225,9 @@ export default function CreatedTripsPage() {
                 color="#ccccff"
                 mb="sm"
                 onClick={() => downloadTripPDF(trip)}
-                >
-                  Download PDF
-                </Button>
+              >
+                Download PDF
+              </Button>
               <Accordion variant="separated" chevronPosition="right">
                 <Accordion.Item value="trip-details">
                   <Accordion.Control>
@@ -296,8 +297,8 @@ export default function CreatedTripsPage() {
                     </Text>
 
                     {trip.ITINERARY &&
-                    trip.ITINERARY.length > 0 &&
-                    trip.ITINERARY[0].itin_steps?.length > 0 ? (
+                      trip.ITINERARY.length > 0 &&
+                      trip.ITINERARY[0].itin_steps?.length > 0 ? (
                       <ul style={{ paddingLeft: "20px", marginTop: "8px" }}>
                         {trip.ITINERARY[0].itin_steps.map((step: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined, index: Key | null | undefined) => (
                           <li key={index}>
@@ -308,7 +309,13 @@ export default function CreatedTripsPage() {
                     ) : (
                       <Text size="sm">No itinerary added yet.</Text>
                     )}
-
+                    <Button
+                      mt="md"
+                      variant="light"
+                      onClick={() => router.push(`/edit-trip/${trip.id}`)}
+                    >
+                      Edit Trip
+                    </Button>
                   </Accordion.Panel>
                 </Accordion.Item>
               </Accordion>
