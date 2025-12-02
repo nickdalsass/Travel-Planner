@@ -239,8 +239,8 @@ export default function CreatedTripsPage() {
             console.log("Fetched trip:", trip);
             console.log("Transportation:", trip.TRANSPORTATION);
 
-            return (
-              <Card key={trip.id} withBorder p="lg">
+          return (
+            <Card key={trip.id} withBorder p="lg">
               <Button
                 color="#ccccff"
                 mb="sm"
@@ -328,22 +328,13 @@ export default function CreatedTripsPage() {
                     ) : (
                       <Text size="sm">No itinerary added yet.</Text>
                     )}
-                    
-                    <Button
-                      mt="md"
-                      variant="light"
-                      onClick={() => router.push(`/editTripsPage?id=${trip.id}`)}
-                    >
-                      Edit Trip
-                    </Button>
-
                   </Accordion.Panel>
+                  
                 </Accordion.Item>
               </Accordion>
-              </Card>
-            );
-          });
-        })()}
+            </Card>
+          );
+        })}
       </Stack>
     </Container>
   );
