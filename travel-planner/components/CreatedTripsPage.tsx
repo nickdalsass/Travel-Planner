@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase/client';
 import { useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
 import router from 'next/router';
+import { jspdf } from 'jspdf';
 
 /* BRIDGET THIS IS YOUR TEMPLATE FOR VIEWING, I WOULD RECOMMEND PULLING FROM THE 
 DATABASE FOR EACH TRIP AND MAPPING IT ONTO SOME KIND OF CARD COMPONENT */
