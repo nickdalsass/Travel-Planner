@@ -56,5 +56,48 @@ export default function EditTripsPage() {
             console.error(error);
         }
     };
-   
+    return (
+        <Container size="lg" p={0} style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <Paper
+                withBorder
+                shadow="sm"
+                radius="md"
+                p="md"
+                mb="md"
+                style={{ flexShrink: 0 }}
+            >
+                <Title order={3} mb="lg">Edit Trip</Title>
+
+                <Stack>
+                    <TextInput
+                        label="Trip Name"
+                        value={trip.trip_name}
+                        onChange={(e) => setTrip({ ...trip, trip_name: e.target.value })}
+                    />
+
+                    <TextInput
+                        label="Location"
+                        value={trip.trip_location}
+                        onChange={(e) => setTrip({ ...trip, trip_location: e.target.value })}
+                    />
+
+                    <TextInput
+                        label="Start Date"
+                        type="date"
+                        value={trip.trip_start}
+                        onChange={(e) => setTrip({ ...trip, trip_start: e.target.value })}
+                    />
+
+                    <TextInput
+                        label="End Date"
+                        type="date"
+                        value={trip.trip_end}
+                        onChange={(e) => setTrip({ ...trip, trip_end: e.target.value })}
+                    />
+
+                    <Button onClick={updateTrip}>Save Changes</Button>
+                </Stack>
+            </Paper>
+        </Container>
+    );
 };

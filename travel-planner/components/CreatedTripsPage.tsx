@@ -1,9 +1,10 @@
 "use client"
 
-import { Paper, Container, Card, Text, Group, Stack, Accordion } from '@mantine/core';
+import { Button, Paper, Container, Card, Text, Group, Stack, Accordion } from '@mantine/core';
 import { supabase } from '@/lib/supabase/client';
-import { useEffect, useState } from 'react';
+import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
+import router from 'next/router';
 
 /* BRIDGET THIS IS YOUR TEMPLATE FOR VIEWING, I WOULD RECOMMEND PULLING FROM THE 
 DATABASE FOR EACH TRIP AND MAPPING IT ONTO SOME KIND OF CARD COMPONENT */
@@ -130,7 +131,7 @@ export default function CreatedTripsPage() {
         p="md"
         mb="md"
         style={{ flexShrink: 0 }}
-        
+
       >
         <Text className="tripPage" >Created Trips</Text>
       </Paper>
@@ -200,7 +201,7 @@ export default function CreatedTripsPage() {
 
                     {trip.ITINERARY && trip.ITINERARY.length > 0 && trip.ITINERARY[0].itin_steps?.length > 0 ? (
                       <ul style={{ paddingLeft: "20px", marginTop: "8px" }}>
-                        {trip.ITINERARY[0].itin_steps.map((step, index) => (
+                        {trip.ITINERARY[0].itin_steps.map((step: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined, index: Key | null | undefined) => (
                           <li key={index}>
                             <Text size="sm">{step}</Text>
                           </li>
@@ -209,7 +210,13 @@ export default function CreatedTripsPage() {
                     ) : (
                       <Text size="sm">No itinerary added yet.</Text>
                     )}
-
+                    <Button
+                      mt="md"
+                      variant="light"
+                      onClick={() => router.push(`/edit-trip/${trip.id}`)}
+                    >
+                      Edit Trip
+                    </Button>
                   </Accordion.Panel>
                 </Accordion.Item>
               </Accordion>
