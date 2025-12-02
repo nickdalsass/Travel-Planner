@@ -224,32 +224,19 @@ export default function CreatedTripsPage() {
       </Paper>
 
       <Stack gap={16}>
-        {(() => {
-          const filteredTrips = trips.filter(
+        {trips
+          .filter(
             (trip) =>
               (trip.trip_name ?? "").toLowerCase().includes(nameFilter.toLowerCase()) &&
               (trip.trip_location ?? "").toLowerCase().includes(locationFilter.toLowerCase())
-          );
-          
-          if (filteredTrips.length === 0) {
-            return <Text key="no-results" ta="center" size="lg" mt="lg">No Trip Results</Text>;
-          }
-          
-          return filteredTrips.map((trip) => {
-            console.log("Fetched trip:", trip);
-            console.log("Transportation:", trip.TRANSPORTATION);
-
-          return (
+          )
+          .map((trip) => (
             <Card key={trip.id} withBorder p="lg">
-              <Button
-                color="#ccccff"
-                mb="sm"
-                leftSection={<Download />}
-                onClick={() => downloadTripPDF(trip)}
+              <Accordion
+                variant="separated"
+                chevronPosition="right"
+                style={{ border: "2px solid black", borderRadius: "8px" }}
               >
-                Download PDF
-              </Button>
-              <Accordion variant="separated" chevronPosition="right">
                 <Accordion.Item value="trip-details">
                   <Accordion.Control>
                     <Text fw={600} size="lg">
@@ -258,7 +245,7 @@ export default function CreatedTripsPage() {
                   </Accordion.Control>
 
                   <Accordion.Panel>
-                    <Text size="sm" c="dimmed">
+                    <Text size="md" fw={600} fs="italic">
                       Destination: {trip.trip_location}
                     </Text>
                     <Text size="sm">Start: {trip.trip_start}</Text>
@@ -329,12 +316,28 @@ export default function CreatedTripsPage() {
                       <Text size="sm">No itinerary added yet.</Text>
                     )}
                   </Accordion.Panel>
-                  
                 </Accordion.Item>
               </Accordion>
+              <Button
+                color="#b8626cff"
+                size="sm"
+                mt="sm"
+                leftSection={<Download />}
+                onClick={() => downloadTripPDF(trip)}
+              >
+                Download PDF
+              </Button>
             </Card>
-          );
-        })}
+          ))}
+        {trips.filter(
+          (trip) =>
+            (trip.trip_name ?? "").toLowerCase().includes(nameFilter.toLowerCase()) &&
+            (trip.trip_location ?? "").toLowerCase().includes(locationFilter.toLowerCase())
+        ).length === 0 && (
+          <Text key="no-results" ta="center" size="lg" mt="lg">
+            No Trip Results
+          </Text>
+        )}
       </Stack>
     </Container>
   );
