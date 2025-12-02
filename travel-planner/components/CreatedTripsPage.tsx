@@ -1,11 +1,13 @@
 "use client";
 
-import { Button, Paper, Container, Card, Text, Group, Stack, Accordion } from '@mantine/core';
+import { Button, Paper, Container, Card, Text, Loader, Stack, Accordion, Center } from '@mantine/core';
 import { supabase } from '@/lib/supabase/client';
 import { useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
 import router from 'next/router';
-import { jspdf } from 'jspdf';
+import jsPDF from 'jspdf';
+import { Download } from 'lucide-react';
+import SearchAndFilterBar from './SearchAndFilterBar';
 
 /* BRIDGET THIS IS YOUR TEMPLATE FOR VIEWING, I WOULD RECOMMEND PULLING FROM THE 
 DATABASE FOR EACH TRIP AND MAPPING IT ONTO SOME KIND OF CARD COMPONENT */
@@ -225,6 +227,7 @@ export default function CreatedTripsPage() {
               <Button
                 color="#ccccff"
                 mb="sm"
+                leftSection={<Download />}
                 onClick={() => downloadTripPDF(trip)}
               >
                 Download PDF
