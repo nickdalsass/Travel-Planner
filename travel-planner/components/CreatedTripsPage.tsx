@@ -32,7 +32,7 @@ type Accommodation = {
 };
 type Itinerary = {
   id: number;
-  itin_steps: string;
+  itin_steps: string[];
 };
 
 type Trip = {
@@ -188,7 +188,7 @@ export default function CreatedTripsPage() {
     y += 8;
 
     if (trip.ITINERARY && trip.ITINERARY[0]?.itin_steps?.length) {
-      trip.ITINERARY[0].itin_steps.forEach((step, i) => {
+      trip.ITINERARY[0].itin_steps.forEach((step: string, i: number) => {
         doc.text(i + 1 + ". " + step, 20, y);
         y += 6;
       });
@@ -256,8 +256,8 @@ export default function CreatedTripsPage() {
                     <Text size="sm" fw={500} mt="md">
                       Transportation
                     </Text>
-                    {trip.TRANSPORTATION?.length > 0 ? (
-                      trip.TRANSPORTATION.map((t) => (
+                    {(trip.TRANSPORTATION ?? []).length > 0 ? (
+                      (trip.TRANSPORTATION ?? []).map((t) => (
                         <div key={t.id} style={{ marginBottom: "8px" }}>
                           <Text size="sm">Type: {t.transp_type}</Text>
                           <Text size="sm">Company: {t.transp_company}</Text>
@@ -277,8 +277,8 @@ export default function CreatedTripsPage() {
                       Accommodations
                     </Text>
 
-                    {trip.ACCOMMODATIONS?.length > 0 ? (
-                      trip.ACCOMMODATIONS.map((a) => (
+                    {(trip.ACCOMMODATIONS ?? []).length > 0 ? (
+                      (trip.ACCOMMODATIONS ?? []).map((a) => (
                         <div key={a.id} style={{ marginBottom: "8px" }}>
                           <Text size="sm">Type: {a.accom_type}</Text>
                           <Text size="sm">Address: {a.accom_address}</Text>
