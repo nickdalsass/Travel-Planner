@@ -224,14 +224,7 @@ export default function CreatedTripsPage() {
 
           return (
             <Card key={trip.id} withBorder p="lg">
-              <Button
-                color="#ccccff"
-                mb="sm"
-                leftSection={<Download />}
-                onClick={() => downloadTripPDF(trip)}
-              >
-                Download PDF
-              </Button>
+              
               <Accordion variant="separated" chevronPosition="right">
                 <Accordion.Item value="trip-details">
                   <Accordion.Control>
@@ -314,15 +307,26 @@ export default function CreatedTripsPage() {
                       <Text size="sm">No itinerary added yet.</Text>
                     )}
                     <Button
+                      color="#734242ff"
                       mt="md"
-                      variant="light"
+                      variant="filled"
                       onClick={() => router.push(`/edit-trip/${trip.id}`)}
                     >
                       Edit Trip
                     </Button>
+                    
                   </Accordion.Panel>
+                  
                 </Accordion.Item>
               </Accordion>
+              <Button
+                      color="#2e5026c9"
+                      mb="sm"
+                      leftSection={<Download />}
+                      onClick={() => downloadTripPDF(trip)}
+                    >
+                      Download PDF
+                    </Button>
             </Card>
           );
         })}
