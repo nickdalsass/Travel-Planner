@@ -7,16 +7,10 @@ import Autoplay from "embla-carousel-autoplay";
 const ImageDisplay = () => {
   const [emblaRef] = useEmblaCarousel(
     {
-      /*align: "center",
-      skipSnaps: true,
-      startIndex: 1,*/
-      watchDrag: false,
+      startIndex: 1,
       align: "center",
-      loop: true,
-      skipSnaps: false,
     },
-    //[Autoplay()]
-    [Autoplay({delay:4000, stopOnInteraction: false})]
+    [Autoplay({delay: 4000, stopOnInteraction: false})]
   );
 
 
@@ -27,6 +21,20 @@ const ImageDisplay = () => {
           <div className="embla__slide">
             <div className="image-wrapper">
             <Image
+              src="/images/city-street.jpg"
+              alt="City Image"
+              width={550}
+              height={700}
+              style={{ borderRadius: "2rem" }}
+              draggable={false}
+            />
+            <span className="image-text">Make Changes to Your Trips</span>
+            </div>
+          </div>
+
+          <div className="embla__slide">
+            <div className="image-wrapper">
+            <Image
               src="/images/cable-car.jpg"
               alt="Cable-car Image"
               width={550}
@@ -34,9 +42,10 @@ const ImageDisplay = () => {
               style={{ borderRadius: "2rem"}}
               draggable={false}
             />
-            <span className="image-text">Easily store travel information in one spot</span>
+            <span className="image-text">Easily Store Travel Information in One Place</span>
             </div>
           </div>
+
           <div className="embla__slide">
             <div className="image-wrapper">
             <Image
@@ -47,22 +56,10 @@ const ImageDisplay = () => {
               style={{ borderRadius: "2rem" }}
               draggable={false}
             />
-            <span className="image-text">Plan your trip with a date and destination</span>
+            <span className="image-text">Plan Your Trip with a Date and Destination</span>
             </div>
           </div>
-          <div className="embla__slide">
-            <div className="image-wrapper">
-            <Image
-              src="/images/arial-city.jpg"
-              alt="Arial City Image"
-              width={550}
-              height={700}
-              style={{ borderRadius: "2rem" }}
-              draggable={false}
-            />
-            <span className="image-text">Include itineraries as desired</span>
-            </div>
-          </div>
+          
           <div className="embla__slide">
             <div className="image-wrapper">
             <Image  
@@ -73,22 +70,24 @@ const ImageDisplay = () => {
               style={{ borderRadius: "2rem" }}
               draggable={false}
             />
-            <span className="image-text">View all created trips</span>
+            <span className="image-text">View All Your Created Trips</span>
             </div>
           </div>
+
           <div className="embla__slide">
             <div className="image-wrapper">
             <Image
-              src="/images/city-street.jpg"
-              alt="City Image"
+              src="/images/arial-city.jpg"
+              alt="Arial City Image"
               width={550}
               height={700}
               style={{ borderRadius: "2rem" }}
               draggable={false}
             />
-            <span className="image-text">Make changes to your trips</span>
+            <span className="image-text">Include Itineraries as Desired</span>
             </div>
           </div>
+
           <div className="embla__slide">
             <div className="image-wrapper">
             <Image
@@ -99,7 +98,7 @@ const ImageDisplay = () => {
               style={{ borderRadius: "2rem" }}
               draggable={false}
             />
-            <span className="image-text">Share specific trips with loved ones!</span>
+            <span className="image-text">Share Specific Trips with Loved Ones!</span>
             </div>
           </div>
         </div>

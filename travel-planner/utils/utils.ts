@@ -42,3 +42,7 @@ export function formatTodaysDate() {
   const formattedDate = `${year}-${month}-${day}`;
   return formattedDate;
 };
+
+export function capitalizeFirstChar(val: string) {
+    return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+}
