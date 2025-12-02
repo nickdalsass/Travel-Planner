@@ -4,7 +4,6 @@
 import { Container, Button, Title, Paper, Stack, TextInput } from '@mantine/core';
 import { supabase } from '@/lib/supabase/client';
 import { useEffect, useState } from 'react';
-import { User } from '@supabase/supabase-js';
 import { useParams, useRouter } from "next/navigation";
 
 
@@ -96,7 +95,7 @@ export default function EditTripsPage() {
                         onChange={(e) => setTrip({ ...trip, trip_end: e.target.value })}
                     />
 
-                    <Button onClick={updateTrip}>Save Changes</Button>
+                    <Button color="#b8626cff" onClick={updateTrip}>Save Changes</Button>
                 </Stack>
             </Paper>
         </Container>

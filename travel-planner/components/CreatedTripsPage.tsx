@@ -2,12 +2,13 @@
 
 import { Button, Paper, Container, Card, Text, Loader, Stack, Accordion, Center } from '@mantine/core';
 import { supabase } from '@/lib/supabase/client';
-import { ReactElement, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
-import router, { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import jsPDF from 'jspdf';
-import { Download } from 'lucide-react';
+import { Download, PencilLine } from 'lucide-react';
 import SearchAndFilterBar from './SearchAndFilterBar';
+import DeleteTripButton from './DeleteTripButton';
 
 /* BRIDGET THIS IS YOUR TEMPLATE FOR VIEWING, I WOULD RECOMMEND PULLING FROM THE 
 DATABASE FOR EACH TRIP AND MAPPING IT ONTO SOME KIND OF CARD COMPONENT */
@@ -327,6 +328,21 @@ export default function CreatedTripsPage() {
               >
                 Download PDF
               </Button>
+              <Button
+                color="#b8626cff"
+                size="sm"
+                mt="sm"
+                leftSection={<PencilLine />}
+                onClick={() => router.push("/edit-trip")}
+              >
+                Edit Trip
+              </Button>
+              <DeleteTripButton
+                tripId={trip.id}
+                onDeleted={() =>
+                  setTrips((prevTrips) => prevTrips.filter((t) => t.id !== trip.id))
+                }
+              />
             </Card>
           ))}
         {trips.filter(

@@ -4,7 +4,6 @@ import '@mantine/dates/styles.css';
 import "./globals.css";
 import { MantineProvider } from "@mantine/core";
 import ClientAppShell from "@/components/ClientAppShell";
-import Modal from "@/components/HelpModal";
 
 const fredokaOne = Fredoka({ 
   subsets: ["latin"],

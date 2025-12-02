@@ -3,7 +3,6 @@
 import {
   AppShell,
   AppShellHeader,
-  AppShellMain,
   Center,
   Group,
   Title,
@@ -67,10 +66,6 @@ export default function ClientAppShell({
             {!isLoginPage && <ProfileButton />}
           </Group>
         </AppShellHeader>
-        {/*<AppShellNavbar p="md">
-          navbar
-        </AppShellNavbar>*/}
-        <AppShellMain>{children}</AppShellMain>
       </AppShell>
     </Center>
   );
