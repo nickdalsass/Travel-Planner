@@ -1,13 +1,22 @@
 "use client";
 
-import { Button, Paper, Container, Card, Text, Loader, Stack, Accordion, Center } from '@mantine/core';
-import { supabase } from '@/lib/supabase/client';
-import { useEffect, useState } from 'react';
-import { User } from '@supabase/supabase-js';
-import router from 'next/router';
-import jsPDF from 'jspdf';
-import { Download } from 'lucide-react';
-import SearchAndFilterBar from './SearchAndFilterBar';
+import {
+  Button,
+  Paper,
+  Container,
+  Card,
+  Text,
+  Loader,
+  Stack,
+  Accordion,
+  Center,
+} from "@mantine/core";
+import { supabase } from "@/lib/supabase/client";
+import { useEffect, useState } from "react";
+import { User } from "@supabase/supabase-js";
+import jsPDF from "jspdf";
+import { Download } from "lucide-react";
+import SearchAndFilterBar from "./SearchAndFilterBar";
 
 /* BRIDGET THIS IS YOUR TEMPLATE FOR VIEWING, I WOULD RECOMMEND PULLING FROM THE 
 DATABASE FOR EACH TRIP AND MAPPING IT ONTO SOME KIND OF CARD COMPONENT */
@@ -48,8 +57,9 @@ type Trip = {
 export default function CreatedTripsPage() {
   const [trips, setTrips] = useState<Trip[]>([]);
   const [user, setUser] = useState<User | null>(null);
-  const [userLoading, setUserLoading] = useState(true);
   const [tripsLoading, setTripsLoading] = useState(true);
+  const [nameFilter, setNameFilter] = useState("");
+  const [locationFilter, setLocationFilter] = useState("");
 
   useEffect(() => {
     const getUser = async () => {
@@ -57,7 +67,6 @@ export default function CreatedTripsPage() {
         data: { user },
       } = await supabase.auth.getUser();
       setUser(user);
-      setUserLoading(false);
     };
     getUser();
   }, []);
@@ -115,13 +124,12 @@ export default function CreatedTripsPage() {
   if (tripsLoading) {
     return (
       <Center mt={"xl"}>
-        <Loader size="xl" color="white"  />;
+        <Loader size="xl" color="white" />;
       </Center>
     );
   }
 
-
-  //Generate PDF of trip 
+  //Generate PDF of trip
   const downloadTripPDF = (trip: Trip) => {
     const doc = new jsPDF();
     let y = 20;
@@ -137,7 +145,6 @@ export default function CreatedTripsPage() {
     y += 6;
     doc.text("End: " + (trip.trip_end ?? "N/A"), 20, y);
     y += 14;
-
 
     // Transportation
     doc.text("Transportation", 20, y);
@@ -157,7 +164,8 @@ export default function CreatedTripsPage() {
         y += 14;
       });
     } else {
-      doc.text("None", 20, y); y += 10;
+      doc.text("None", 20, y);
+      y += 10;
     }
 
     // Accommodations
@@ -178,7 +186,8 @@ export default function CreatedTripsPage() {
         y += 14;
       });
     } else {
-      doc.text("None", 20, y); y += 10;
+      doc.text("None", 20, y);
+      y += 10;
     }
 
     // Itinerary
@@ -187,7 +196,7 @@ export default function CreatedTripsPage() {
 
     if (trip.ITINERARY && trip.ITINERARY[0]?.itin_steps?.length) {
       trip.ITINERARY[0].itin_steps.forEach((step, i) => {
-        doc.text((i + 1) + ". " + step, 20, y);
+        doc.text(i + 1 + ". " + step, 20, y);
         y += 6;
       });
     } else {
@@ -211,19 +220,35 @@ export default function CreatedTripsPage() {
         p="md"
         mb="md"
         style={{ flexShrink: 0 }}
-
       >
         <Text className="tripPage">Created Trips</Text>
-        <SearchAndFilterBar user={user} />
+        <SearchAndFilterBar
+          user={user}
+          nameValue={nameFilter}
+          locationValue={locationFilter}
+          onNameChange={setNameFilter}
+          onLocationChange={setLocationFilter}
+        />
       </Paper>
 
       <Stack gap={16}>
-        {trips.map((trip) => {
-          console.log("Fetched trip:", trip);
-          console.log("Transportation:", trip.TRANSPORTATION);
+        {(() => {
+          const filteredTrips = trips.filter(
+            (trip) =>
+              (trip.trip_name ?? "").toLowerCase().includes(nameFilter.toLowerCase()) &&
+              (trip.trip_location ?? "").toLowerCase().includes(locationFilter.toLowerCase())
+          );
+          
+          if (filteredTrips.length === 0) {
+            return <Text key="no-results" ta="center" size="lg" mt="lg">No Trip Results</Text>;
+          }
+          
+          return filteredTrips.map((trip) => {
+            console.log("Fetched trip:", trip);
+            console.log("Transportation:", trip.TRANSPORTATION);
 
-          return (
-            <Card key={trip.id} withBorder p="lg">
+            return (
+              <Card key={trip.id} withBorder p="lg">
               <Button
                 color="#ccccff"
                 mb="sm"
@@ -261,7 +286,6 @@ export default function CreatedTripsPage() {
                           <Text size="sm">
                             Confirmation Number: {t.confirmation_num}
                           </Text>
-                          <Text size="sm">Departure: {t.transp_departure}</Text>
                         </div>
                       ))
                     ) : (
@@ -294,17 +318,16 @@ export default function CreatedTripsPage() {
                       <Text size="sm">No accommodations added yet.</Text>
                     )}
 
-                    {/*Itinerary Section */}
                     {/* Itinerary Section */}
                     <Text size="sm" fw={500} mt="md">
                       Itinerary
                     </Text>
 
                     {trip.ITINERARY &&
-                      trip.ITINERARY.length > 0 &&
-                      trip.ITINERARY[0].itin_steps?.length > 0 ? (
+                    trip.ITINERARY.length > 0 &&
+                    trip.ITINERARY[0].itin_steps?.length > 0 ? (
                       <ul style={{ paddingLeft: "20px", marginTop: "8px" }}>
-                        {trip.ITINERARY[0].itin_steps.map((step: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined, index: Key | null | undefined) => (
+                        {trip.ITINERARY[0].itin_steps.map((step: string, index: number) => (
                           <li key={index}>
                             <Text size="sm">{step}</Text>
                           </li>
@@ -313,19 +336,13 @@ export default function CreatedTripsPage() {
                     ) : (
                       <Text size="sm">No itinerary added yet.</Text>
                     )}
-                    <Button
-                      mt="md"
-                      variant="light"
-                      onClick={() => router.push(`/edit-trip/${trip.id}`)}
-                    >
-                      Edit Trip
-                    </Button>
                   </Accordion.Panel>
                 </Accordion.Item>
               </Accordion>
-            </Card>
-          );
-        })}
+              </Card>
+            );
+          });
+        })()}
       </Stack>
     </Container>
   );
