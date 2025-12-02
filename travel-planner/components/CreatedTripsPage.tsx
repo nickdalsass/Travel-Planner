@@ -9,6 +9,7 @@ import {
   Accordion,
   Loader,
   Center,
+  Button,
 } from "@mantine/core";
 import { supabase } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
@@ -126,6 +127,84 @@ export default function CreatedTripsPage() {
 
   }
 
+
+  //Generate PDF of trip 
+  const downloadTripPDF = (trip: Trip) => {
+    const doc = new jsPDF();
+    let y = 20;
+
+    doc.setFontSize(16);
+    doc.text("Trip Name: " + (trip.trip_name ?? "N/A"), 20, y); 
+    y += 12;
+
+    doc.setFontSize(12);
+    doc.text("Destination: " + (trip.trip_location ?? "N/A"), 20, y); 
+    y += 6;
+    doc.text("Start: " + (trip.trip_start ?? "N/A"), 20, y); 
+    y += 6;
+    doc.text("End: " + (trip.trip_end ?? "N/A"), 20, y); 
+    y += 14;
+
+
+    // Transportation
+    doc.text("Transportation", 20, y);
+    y += 8;
+
+    if (trip.TRANSPORTATION?.length) {
+      trip.TRANSPORTATION.forEach((t) => {
+        doc.text("Type: " + (t.transp_type ?? "N/A"), 20, y); 
+        y += 6;
+        doc.text("Company: " + (t.transp_company ?? "N/A"), 20, y); 
+        y += 6;
+        doc.text("Departure: " + (t.transp_departure ?? "N/A"), 20, y); 
+        y += 6;
+        doc.text("Arrival: " + (t.transp_arrival ?? "N/A"), 20, y); 
+        y += 6;
+        doc.text("Confirmation: " + (t.confirmation_num ?? "N/A"), 20, y); 
+       y += 14;
+      });
+    } else {
+      doc.text("None", 20, y); y += 10;
+    }
+
+    // Accommodations
+    doc.text("Accommodations", 20, y);
+    y += 8;
+
+    if (trip.ACCOMMODATIONS?.length) {
+      trip.ACCOMMODATIONS.forEach((a) => {
+        doc.text("Type: " + (a.accom_type ?? "N/A"), 20, y); 
+        y += 6;
+        doc.text("Address: " + (a.accom_address ?? "N/A"), 20, y); 
+        y += 6;
+        doc.text("Check-in: " + (a.accom_checkin ?? "N/A"), 20, y); 
+        y += 6;
+        doc.text("Check-out: " + (a.accom_checkout ?? "N/A"), 20, y); 
+        y += 6;
+        doc.text("Confirmation: " + (a.confirmation_num ?? "N/A"), 20, y); 
+        y += 14;
+      });
+    } else {
+      doc.text("None", 20, y); y += 10;
+    }
+
+    // Itinerary
+    doc.text("Itinerary", 20, y);
+    y += 8;
+
+    if (trip.ITINERARY && trip.ITINERARY[0]?.itin_steps?.length) {
+      trip.ITINERARY[0].itin_steps.forEach((step, i) => {
+        doc.text((i + 1) + ". " + step, 20, y);
+        y += 6;
+      });
+    } else {
+      doc.text("None", 20, y);
+    }
+
+    // Save the PDF
+    doc.save((trip.trip_name ?? "trip") + ".pdf");
+  };
+
   return (
     <Container
       size="lg"
@@ -150,6 +229,12 @@ export default function CreatedTripsPage() {
 
           return (
             <Card key={trip.id} withBorder p="lg">
+              <Button
+                color="blue"
+                mb="md"
+                onClick={() => downloadTripPDF(trip)}
+                >
+                </Button>
               <Accordion variant="separated" chevronPosition="right">
                 <Accordion.Item value="trip-details">
                   <Accordion.Control>
