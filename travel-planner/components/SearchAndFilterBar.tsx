@@ -7,10 +7,13 @@ import { useEffect, useState } from "react";
 
 type SearchAndFilterBarProps = {
   user: { id: string } | null;
-  onSearch: (value: string) => void; //for filtering out by trip name
+  nameValue: string;
+  locationValue: string;
+  onNameChange: (value: string) => void;
+  onLocationChange: (value: string) => void;
 };
 
-const SearchAndFilterBar = ({ user, onSearch }: SearchAndFilterBarProps) => {
+const SearchAndFilterBar = ({ user, nameValue, locationValue, onNameChange, onLocationChange }: SearchAndFilterBarProps) => {
   const [tripNames, setTripNames] = useState<string[]>([]);
   const [tripLocations, setTripLocations] = useState<string[]>([]);
 
@@ -26,7 +29,7 @@ const SearchAndFilterBar = ({ user, onSearch }: SearchAndFilterBarProps) => {
             (trip: { trip_name: string }) => trip.trip_name
           );
           const locations = result.data.map(
-            (location: { trip_location: string }) => location.trip_location
+            (trip: { trip_location: string }) => trip.trip_location
           );
 
           /*use spread op into a new Array using a Set data structure to remove these duplicates
@@ -43,47 +46,34 @@ const SearchAndFilterBar = ({ user, onSearch }: SearchAndFilterBarProps) => {
   }, [user]);
 
   return (
-    <Paper w={"100%"} withBorder shadow="md" p={"md"} mt={10}>
-      <form>
-        <Group justify="space-between" w={"100%"}>
-          <Group justify="space-evenly">
-            <Autocomplete
-              name="tripName"
-              data={tripNames}
-              radius={"md"}
-              w={250}
-              aria-label="trip search"
-              withScrollArea
-              clearable
-              placeholder="Search by Trip Name"
-              onChange={onSearch}
-            />
-            <Autocomplete
-              name="tripLocation"
-              data={tripLocations}
-              radius={"md"}
-              w={250}
-              aria-label="location search"
-              withScrollArea
-              clearable
-              placeholder="Search by Trip Location"
-              onChange={onSearch}
-            />
-          </Group>
-          <Group gap={"2rem"}>
-            <Button
-              type="submit"
-              variant="transparent"
-              c={"#b8626cff"}
-              style={{ border: "1px solid black" }}
-              radius={"md"}
-            >
-              <Search />
-            </Button>
-          </Group>
+      <Group mt={ 20} justify="space-evenly" w={"100%"}>
+          <Autocomplete
+            name="tripName"
+            data={tripNames}
+            leftSection={<Search />}
+            radius={"md"}
+            w={250}
+            aria-label="trip search"
+            withScrollArea
+            clearable
+            placeholder="Search by Trip Name"
+            value={nameValue}
+            onChange={onNameChange}
+          />
+          <Autocomplete
+            name="tripLocation"
+            data={tripLocations}
+            leftSection={<Search />}
+            radius={"md"}
+            w={250}
+            aria-label="location search"
+            withScrollArea
+            clearable
+            placeholder="Search by Trip Location"
+            value={locationValue}
+            onChange={onLocationChange}
+          />
         </Group>
-      </form>
-    </Paper>
   );
 };
 
