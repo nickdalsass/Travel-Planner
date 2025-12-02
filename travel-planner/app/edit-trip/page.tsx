@@ -1,5 +1,4 @@
 "use client";
-"use client"
 
 import { Container, Button, Title, Paper, Stack, TextInput } from '@mantine/core';
 import { supabase } from '@/lib/supabase/client';
