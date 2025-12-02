@@ -231,10 +231,11 @@ export default function CreatedTripsPage() {
           return (
             <Card key={trip.id} withBorder p="lg">
               <Button
-                color="blue"
-                mb="md"
+                color="#eacebeff"
+                mb="xs"
                 onClick={() => downloadTripPDF(trip)}
                 >
+                  Download PDF
                 </Button>
               <Accordion variant="separated" chevronPosition="right">
                 <Accordion.Item value="trip-details">
