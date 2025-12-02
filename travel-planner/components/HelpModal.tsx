@@ -48,6 +48,18 @@ export default function HelpModal() {
                   </li>
                 </div>
               </div>
+              <div>
+                <div style={{ fontWeight: "bold" }}>Created Trips</div>
+                <div style={{ marginLeft: 20 }}>
+                  <li> Search by trip name or location</li>
+                  <li>
+                    Click the dropdown menu on each trip to view the trip details
+                  </li>
+                  <li>
+                    To download, edit, or delete, simply click the corresponding icon
+                  </li>
+                </div>
+              </div>
               <li>Add more stuff here!!! @annie @bridget</li>
             </Stack>
           </Modal.Body>
