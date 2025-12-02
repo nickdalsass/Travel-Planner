@@ -60,7 +60,6 @@ export default function HelpModal() {
                   </li>
                 </div>
               </div>
-              <li>Add more stuff here!!! @annie @bridget</li>
             </Stack>
           </Modal.Body>
         </Modal.Content>
