@@ -112,10 +112,9 @@ export default function CreatedTripsPage() {
   if (tripsLoading) {
     return (
       <Center mt={"xl"}>
-        <Loader size="xl" color="white" />;
+        <Loader size="xl" color="white"  />;
       </Center>
     );
-
   }
 
 
@@ -212,6 +211,7 @@ export default function CreatedTripsPage() {
 
       >
         <Text className="tripPage">Created Trips</Text>
+        <SearchAndFilterBar user={user} />
       </Paper>
 
       <Stack gap={16}>
