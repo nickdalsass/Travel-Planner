@@ -66,6 +66,7 @@ export default function ClientAppShell({
             {!isLoginPage && <ProfileButton />}
           </Group>
         </AppShellHeader>
+        <AppShellMain>{children}</AppShellMain>
       </AppShell>
     </Center>
   );
