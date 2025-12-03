@@ -1,29 +1,13 @@
-'use client';
-import { Button, ButtonProps } from '@mantine/core';
-import { JSX, DetailedHTMLProps, ButtonHTMLAttributes, Ref } from 'react';
-import { useRouter } from 'next/navigation';
+import { Button, ButtonProps } from "@mantine/core";
+import { useRouter } from "next/navigation";
 
-export const ProfileCreateTrip = (
-  props: JSX.IntrinsicAttributes &
-    ButtonProps & { component?: 'button' | undefined } & Omit<
-      Omit<
-        DetailedHTMLProps<
-          ButtonHTMLAttributes<HTMLButtonElement>,
-          HTMLButtonElement
-        >,
-        'ref'
-      >,
-      'component' | keyof ButtonProps
-    > & {
-      ref?: Ref<HTMLButtonElement> | undefined;
-    }
-) => {
+export const ProfileCreateTrip = (props: ButtonProps) => {
   const router = useRouter();
-
+  
   return (
     <Button
-      variant='default'
-      bd={'0px black'}
+      variant="default"
+      bd="0px black"
       {...props}
       onClick={() => router.push("/trip")}
     >

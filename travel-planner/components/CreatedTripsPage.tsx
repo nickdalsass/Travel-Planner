@@ -117,7 +117,7 @@ export default function CreatedTripsPage() {
   if (tripsLoading) {
     return (
       <Center mt={"xl"}>
-        <Loader size="xl" color="white" />;
+        <Loader size="xl" color="white" />
       </Center>
     );
   }
