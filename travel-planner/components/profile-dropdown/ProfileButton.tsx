@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { supabase } from '@/lib/supabase/client';
-import { useEffect, useState } from 'react';
+import { supabase } from "@/lib/supabase/client";
+import { useEffect, useState } from "react";
 import {
   Avatar,
   Menu,
@@ -10,26 +10,27 @@ import {
   MenuItem,
   MenuLabel,
   MenuTarget,
-} from '@mantine/core';
+} from "@mantine/core";
 import { LoginButton } from "@/components/LoginButton";
-import { LogoutButton } from '@/components/profile-dropdown/LogoutButton';
-import { User } from '@supabase/supabase-js';
-import { Earth, LogOut, NotebookPen, NotebookText } from 'lucide-react';
-import ViewCreatedTripsButton from './ViewCreatedTripsButton';
-import ProfileCreateTrip from './ProfileCreateTrip';
-import ProfileShareTrip from './ProfileShareTrip';
+import { LogoutButton } from "@/components/profile-dropdown/LogoutButton";
+import { User } from "@supabase/supabase-js";
+import { Earth, LogOut, NotebookPen, NotebookText, User2 } from "lucide-react";
+import ViewCreatedTripsButton from "./ViewCreatedTripsButton";
+import ProfileCreateTrip from "./ProfileCreateTrip";
+import ProfileShareTrip from "./ProfileShareTrip";
+import ProfileViewAccount from "./ProfileViewAccount";
 
 const nameToNumber = (name: string) => {
   return [...name].reduce((sum, char) => char.charCodeAt(0) + sum, 0);
 };
 
 const possibleColors = [
-  '#ffb6b9',
-  '#b39ddb',
-  '#cb89e6',
-  '#ff92c2',
-  '#ffad6b',
-  '#ccccff',
+  "#ffb6b9",
+  "#b39ddb",
+  "#cb89e6",
+  "#ff92c2",
+  "#ffad6b",
+  "#ccccff",
 ];
 
 const ProfileButton = () => {
@@ -38,7 +39,9 @@ const ProfileButton = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       setUser(user);
       // Log the username when you're in the homepage to check it out
       console.log(user?.user_metadata?.display_name);
@@ -62,28 +65,38 @@ const ProfileButton = () => {
     <Menu closeOnItemClick={true}>
       <MenuTarget>
         <Avatar
-          variant='filled'
-          size='45'
+          variant="filled"
+          size="45"
           color={color}
           name={userName}
-          bd={'1px solid black'}
+          bd={"1px solid black"}
         ></Avatar>
       </MenuTarget>
 
       <MenuDropdown>
         <MenuLabel>Trips</MenuLabel>
-        <MenuItem component={ProfileCreateTrip} leftSection={<NotebookPen />}>Create a Trip</MenuItem>
-        <MenuItem component={ViewCreatedTripsButton} leftSection={<NotebookText />}>Created Trips</MenuItem>
-        <MenuItem component={ProfileShareTrip} leftSection={<Earth />}>Share Trip</MenuItem>
+        <MenuItem component={ProfileCreateTrip} leftSection={<NotebookPen />}>
+          Create a Trip
+        </MenuItem>
+        <MenuItem
+          component={ViewCreatedTripsButton}
+          leftSection={<NotebookText />}
+        >
+          Created Trips
+        </MenuItem>
+        <MenuItem component={ProfileShareTrip} leftSection={<Earth />}>
+          Share Trip
+        </MenuItem>
         <MenuDivider />
         <MenuLabel>Account</MenuLabel>
+        <MenuItem component={ProfileViewAccount} leftSection={<User2 />}>
+          Credentials
+        </MenuItem>
         <MenuItem component={LogoutButton} leftSection={<LogOut />}>
           Logout
         </MenuItem>
       </MenuDropdown>
     </Menu>
-
-    
   );
 };
 
