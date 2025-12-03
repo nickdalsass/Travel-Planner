@@ -14,9 +14,10 @@ import {
 import { LoginButton } from "@/components/LoginButton";
 import { LogoutButton } from '@/components/profile-dropdown/LogoutButton';
 import { User } from '@supabase/supabase-js';
-import { LogOut, NotebookPen, NotebookText } from 'lucide-react';
+import { Earth, LogOut, NotebookPen, NotebookText } from 'lucide-react';
 import ViewCreatedTripsButton from './ViewCreatedTripsButton';
 import ProfileCreateTrip from './ProfileCreateTrip';
+import ProfileShareTrip from './ProfileShareTrip';
 
 const nameToNumber = (name: string) => {
   return [...name].reduce((sum, char) => char.charCodeAt(0) + sum, 0);
@@ -58,7 +59,7 @@ const ProfileButton = () => {
   const color = possibleColors[nameToNumber(userName) % possibleColors.length];
 
   return (
-    <Menu>
+    <Menu closeOnItemClick={true}>
       <MenuTarget>
         <Avatar
           variant='filled'
@@ -73,6 +74,7 @@ const ProfileButton = () => {
         <MenuLabel>Trips</MenuLabel>
         <MenuItem component={ProfileCreateTrip} leftSection={<NotebookPen />}>Create a Trip</MenuItem>
         <MenuItem component={ViewCreatedTripsButton} leftSection={<NotebookText />}>Created Trips</MenuItem>
+        <MenuItem component={ProfileShareTrip} leftSection={<Earth />}>Share Trip</MenuItem>
         <MenuDivider />
         <MenuLabel>Account</MenuLabel>
         <MenuItem component={LogoutButton} leftSection={<LogOut />}>

@@ -22,11 +22,11 @@ export default function HelpModal() {
             <Stack>
               <div style={{ marginLeft: 20 }}>
                 <li>
-                  Click the Travel Planner Logo and Title at any time to return
+                  Click the Travel Planner logo and title at any time to return
                   to the home page
                 </li>
                 <li>
-                  Sign up or Log in by using the login button in the top right
+                  Sign up or log in by using the login button in the top right
                   corner
                 </li>
                 <li>
@@ -41,9 +41,9 @@ export default function HelpModal() {
               <div>
                 <div style={{ fontWeight: "bold" }}>Creating a trip</div>
                 <div style={{ marginLeft: 20 }}>
-                  <li> An asterisk indicates a required field</li>
+                  <li>An asterisk indicates a required field</li>
                   <li>
-                    Select from the drop down menu, when adding a transportation
+                    Select from the dropdown menu when adding a transportation
                     type
                   </li>
                 </div>
@@ -51,21 +51,32 @@ export default function HelpModal() {
               <div>
                 <div style={{ fontWeight: "bold" }}>Created Trips</div>
                 <div style={{ marginLeft: 20 }}>
-                  <li> Search by trip name or location</li>
+                  <li>Search by trip name or location</li>
                   <li>
-                    Click the dropdown menu on each trip to view the trip details
+                    Click the dropdown menu on each trip to view the trip
+                    details
                   </li>
                   <li>
-                    To edit or delete, simply click the corresponding icon
+                    To edit, delete, or download & share, simply click the corresponding icon
                   </li>
                 </div>
               </div>
               <div>
                 <div style={{ fontWeight: "bold" }}>Share a trip</div>
                 <div style={{ marginLeft: 20 }}>
-                  <li> Share Trips through PDF on Created Trips Page</li>
+                  <li>Share trips through PDF on Created Trips page</li>
                   <li>
-                    Select "Download PDF" to save the document to your device
+                    Select &quot;Download & Share PDF&quot; to save the
+                    document to your device
+                  </li>
+                  <li>
+                    This will direct you to the Share Trips page, at which point
+                    you may always return back to the home page
+                  </li>
+                  <li>
+                    You may only share one trip at a time, and remember, your
+                    profile dropdown can always direct you anywhere in the
+                    application!
                   </li>
                 </div>
               </div>

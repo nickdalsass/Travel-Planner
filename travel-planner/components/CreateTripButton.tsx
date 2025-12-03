@@ -1,9 +1,9 @@
 "use client";
 
 import { supabase } from "@/lib/supabase/client";
-import { Button, Loader } from "@mantine/core";
+import { Button, Loader, Group } from "@mantine/core";
 import { User } from "@supabase/supabase-js";
-import { LockKeyhole, Wrench } from "lucide-react";
+import { LockKeyhole, Wrench, ScanSearch, Earth } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const CreateTripButton = () => {
@@ -22,11 +22,19 @@ const CreateTripButton = () => {
     getUser();
   }, []);
 
-  if (loading) {
+  if (loading) {//add loading animation toa ll the buttons to make it look unified
     return (
-      <Button size="lg" color="#b8626cff" w={180}>
-        <Loader size={"sm"} color={"white"} />
-      </Button>
+      <Group gap={"5vh"}>
+        <Button size="lg" color="#b8626cff" miw={140}>
+          <Loader size={"sm"} color={"white"} />
+        </Button>
+        <Button size="lg" color="#b8626cff" miw={140}>
+          <Loader size={"sm"} color={"white"} />
+        </Button>
+        <Button size="lg" color="#b8626cff" miw={140}>
+          <Loader size={"sm"} color={"white"} />
+        </Button>
+      </Group>
     );
   }
 
@@ -45,6 +53,7 @@ const CreateTripButton = () => {
   }
 
   return (
+    <Group gap={"5vh"}>
       <Button
         component="a"
         href="/trip"
@@ -55,6 +64,9 @@ const CreateTripButton = () => {
       >
         Create a Trip
       </Button>
+      <Button size="lg" leftSection={<ScanSearch />} component='a' href="/tripview" color="#b8626cff">View Trips</Button>
+      <Button size="lg" leftSection={<Earth />} component='a' href="/share-trip" color="#b8626cff">Share Trip</Button>
+    </Group>
   );
 };
 export default CreateTripButton;

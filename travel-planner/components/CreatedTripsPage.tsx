@@ -198,6 +198,9 @@ export default function CreatedTripsPage() {
 
     // Save the PDF
     doc.save((trip.trip_name ?? "trip") + ".pdf");
+    
+    const shareTripParam = "/share-trip";
+    router.push(shareTripParam);
   };
 
   return (
@@ -326,7 +329,7 @@ export default function CreatedTripsPage() {
                 leftSection={<Download />}
                 onClick={() => downloadTripPDF(trip)}
               >
-                Download PDF
+                Download & Share PDF
               </Button>
               <Button
                 color="#b8626cff"
