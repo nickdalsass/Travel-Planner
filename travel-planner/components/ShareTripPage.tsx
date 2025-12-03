@@ -1,7 +1,7 @@
 "use client";
 
 import { Center, Button, Group, Paper, SimpleGrid, Stack, Text, Title } from "@mantine/core";
-import { Dropzone, DropzoneProps, FileWithPath } from "@mantine/dropzone";
+import { Dropzone, DropzoneProps } from "@mantine/dropzone";
 import { ImageIcon, Upload, X, Earth, Home } from "lucide-react";
 import { useState } from "react";
 import ShareTripButton from "./ShareTripButton";

@@ -9,11 +9,11 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@mantine/core": "^8.3.5",
-    "@mantine/dates": "^8.3.5",
+    "@mantine/core": "^8.3.9",
+    "@mantine/dates": "^8.3.9",
     "@mantine/dropzone": "^8.3.9",
     "@mantine/form": "^8.3.5",
-    "@mantine/hooks": "^8.3.5",
+    "@mantine/hooks": "^8.3.9",
     "@react-google-maps/api": "^2.20.7",
     "@supabase/supabase-js": "^2.80.0",
     "@types/lodash.debounce": "^4.0.9",

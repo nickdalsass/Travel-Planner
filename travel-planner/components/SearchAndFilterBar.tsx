@@ -1,7 +1,7 @@
 "use client";
 
 import { supabase } from "@/lib/supabase/client";
-import { Autocomplete, Button, Group, Paper } from "@mantine/core";
+import { Autocomplete, Group } from "@mantine/core";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -13,7 +13,13 @@ type SearchAndFilterBarProps = {
   onLocationChange: (value: string) => void;
 };
 
-const SearchAndFilterBar = ({ user, nameValue, locationValue, onNameChange, onLocationChange }: SearchAndFilterBarProps) => {
+const SearchAndFilterBar = ({
+  user,
+  nameValue,
+  locationValue,
+  onNameChange,
+  onLocationChange,
+}: SearchAndFilterBarProps) => {
   const [tripNames, setTripNames] = useState<string[]>([]);
   const [tripLocations, setTripLocations] = useState<string[]>([]);
 
@@ -46,34 +52,34 @@ const SearchAndFilterBar = ({ user, nameValue, locationValue, onNameChange, onLo
   }, [user]);
 
   return (
-      <Group mt={ 20} justify="space-evenly" w={"100%"}>
-          <Autocomplete
-            name="tripName"
-            data={tripNames}
-            leftSection={<Search />}
-            radius={"md"}
-            w={250}
-            aria-label="trip search"
-            withScrollArea
-            clearable
-            placeholder="Search by Trip Name"
-            value={nameValue}
-            onChange={onNameChange}
-          />
-          <Autocomplete
-            name="tripLocation"
-            data={tripLocations}
-            leftSection={<Search />}
-            radius={"md"}
-            w={250}
-            aria-label="location search"
-            withScrollArea
-            clearable
-            placeholder="Search by Trip Location"
-            value={locationValue}
-            onChange={onLocationChange}
-          />
-        </Group>
+    <Group mt={20} justify="space-evenly" w={"100%"}>
+      <Autocomplete
+        name="tripName"
+        data={tripNames}
+        leftSection={<Search />}
+        radius={"md"}
+        w={250}
+        aria-label="trip search"
+        withScrollArea
+        clearable
+        placeholder="Search by Trip Name"
+        value={nameValue}
+        onChange={onNameChange}
+      />
+      <Autocomplete
+        name="tripLocation"
+        data={tripLocations}
+        leftSection={<Search />}
+        radius={"md"}
+        w={250}
+        aria-label="location search"
+        withScrollArea
+        clearable
+        placeholder="Search by Trip Location"
+        value={locationValue}
+        onChange={onLocationChange}
+      />
+    </Group>
   );
 };
 
