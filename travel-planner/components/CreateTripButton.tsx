@@ -64,7 +64,7 @@ const CreateTripButton = () => {
       >
         Create a Trip
       </Button>
-      <Button size="lg" leftSection={<ScanSearch />} component='a' href="/tripview" color="#b8626cff">View Trips</Button>
+      <Button size="lg" leftSection={<ScanSearch />} component='a' href="/tripview" color="#b8626cff">View Created Trips</Button>
       <Button size="lg" leftSection={<Earth />} component='a' href="/share-trip" color="#b8626cff">Share Trip</Button>
     </Group>
   );
