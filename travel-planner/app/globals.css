@@ -1,3 +1,7 @@
+html, body {
+  background-color: #eacebeff;
+}
+
 /* this is ugly but i wanted reusable styles for mantine input components so I dont have to style each one */
 .mantine-TextInput-input,
 .mantine-Select-input,
