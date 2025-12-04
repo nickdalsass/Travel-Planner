@@ -65,45 +65,48 @@ const ViewAccountPage = () => {
   ).toFixed(1);
 
   return (
-    <Center mt={"20vh"}>
+    <Center mt={"18vh"}>
       <Paper p={"xl"} shadow={"xl"} w={"50%"} withBorder>
         <Stack align="center" gap={"md"}>
           <Title mb="md">
             <User2 /> Account Details:
           </Title>
           <Paper w="85%" withBorder shadow={"xl"} p={"sm"}>
-            <Text>
-              <i>
-                <strong>Username:</strong>
-              </i>{" "}
-              {user.user_metadata.display_name}
-            </Text>
-            <Text>
-              <i>
-                <strong>Email:</strong>
-              </i>{" "}
-              {user.email}
-            </Text>
-            <Text>
-              <i>
-                <strong>Account Creation Date:</strong>
-              </i>{" "}
-              {accountCreationDate}
-            </Text>
-            <Text>
-              <i>
-                <strong>Account Lifetime:</strong>
-              </i>{" "}
-              {accountLifetime} day(s)
-            </Text>
-            <Text>
-              <i>
-                <strong>Number of Created Trips:</strong>
-              </i>{" "}
-              {numTrips}
-            </Text>
+            <Stack gap={"md"}>
+              <Text>
+                <i>
+                  <strong>Username:</strong>
+                </i>{" "}
+                {user.user_metadata.display_name}
+              </Text>
+              <Text>
+                <i>
+                  <strong>Email:</strong>
+                </i>{" "}
+                {user.email}
+              </Text>
+              <Text>
+                <i>
+                  <strong>Account Creation Date:</strong>
+                </i>{" "}
+                {accountCreationDate}
+              </Text>
+              <Text>
+                <i>
+                  <strong>Account Lifetime:</strong>
+                </i>{" "}
+                {accountLifetime} day(s)
+              </Text>
+              <Text>
+                <i>
+                  <strong>Number of Created Trips:</strong>
+                </i>{" "}
+                {numTrips}
+              </Text>
+            </Stack>
           </Paper>
           <Button
+            mt={"md"}
             leftSection={<Home />}
             onClick={() => (window.location.href = "/")}
             color="#b8626cff"
