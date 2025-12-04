@@ -66,14 +66,8 @@ const CreateTripStepper = () => {
       tripReturnDate: (value) =>
         value ? null : "Trip return date is required",
       transportationItems: {
-        transpType: (value: string) =>
-          value ? null : "Transportation Type is Required",
-        transpCompany: (value: string) =>
-          value ? null : "Transportation Company is Required",
         transpDepartureDate: (value: string | null) =>
           value ? null : "Departure Date is Required",
-        transpArrivalDate: (value: string | null) =>
-          value ? null : "Arrival Date is Required",
       },
       accommodationItems: {
         accomType: (value: string) =>
@@ -125,13 +119,6 @@ const CreateTripStepper = () => {
             form.setFieldError(
               `transportationItems.${i}.transpType`,
               "Transportation Type is Required"
-            );
-            return;
-          }
-          if (!items[i].transpCompany) {
-            form.setFieldError(
-              `transportationItems.${i}.transpCompany`,
-              "Transportation Company is Required"
             );
             return;
           }
@@ -190,8 +177,8 @@ const CreateTripStepper = () => {
     setActive((current) => (current > 0 ? current - 1 : current));
 
   const addTransportationItem = () => {
-    if ((form.values.transportationItems?.length || 0) >= 4) {
-      return; //no more than 4 transportation items
+    if ((form.values.transportationItems?.length || 0) >= 3) {
+      return; //no more than 3 transportation items
     }
     form.insertListItem("transportationItems", {
       transpType: "",
@@ -312,7 +299,7 @@ const CreateTripStepper = () => {
 
             <TextInput
               w={400}
-              label="Location"
+              label="Destination"
               withAsterisk
               required
               autoComplete="off"
@@ -363,8 +350,6 @@ const CreateTripStepper = () => {
                     <TextInput
                       w={300}
                       label="Transportation Company"
-                      withAsterisk
-                      required
                       autoComplete="off"
                       placeholder="Delta, Amtrak, etc..."
                       {...form.getInputProps(
@@ -385,7 +370,6 @@ const CreateTripStepper = () => {
                     <DateInput
                       w={300}
                       clearable
-                      required
                       label="Return Date"
                       {...form.getInputProps(
                         `transportationItems.${index}.transpArrivalDate`
@@ -424,15 +408,15 @@ const CreateTripStepper = () => {
                 leftSection={<Plus />}
                 color="#b8626c"
                 onClick={addTransportationItem}
-                disabled={(form.values.transportationItems?.length || 0) >= 4}
+                disabled={(form.values.transportationItems?.length || 0) >= 3}
                 title={
-                  (form.values.transportationItems?.length || 0) >= 4
-                    ? "Maximum of 4 transportation items allowed"
+                  (form.values.transportationItems?.length || 0) >= 3
+                    ? "Maximum of 3 transportation items allowed"
                     : ""
                 }
               >
                 Add Transportation (
-                {form.values.transportationItems?.length || 0}/4)
+                {form.values.transportationItems?.length || 0}/3)
               </Button>
             </Group>
           </Stack>
